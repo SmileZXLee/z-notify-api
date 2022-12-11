@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zxlee.znotifyapi.mapper.NoticeMapper">
+    <select id="list" resultType="NoticePO" parameterType="string">
+        select id, title, content, project_id, createtime, updatetime, expiretime, expiretime is null or expiretime > now() as status from t_notice where project_id = #{projectId} order by status desc, createtime desc
+    </select>
+
+    <select id="listByExipretime" resultType="NoticePO" parameterType="string">
+        select * from t_notice where project_id = #{projectId}
+        <![CDATA[
+              and (
+              expiretime is null
+              or
+              expiretime >= now()
+              )
+        ]]>
+        order by createtime desc
+    </select>
+
+    <select id="listById" resultType="NoticePO" parameterType="string">
+        select * from t_notice where id = #{id}
+    </select>
+
+    <insert id="insertNotice" parameterType="NoticePO">
+        insert into `t_notice`(id,title,content,project_id,expiretime) VALUES (#{id},#{title},#{content},#{projectId},#{expiretime})
+    </insert>
+
+    <update id="updateNotice">
+        update t_notice
+        <set>
+            <if test="noticePO.title != null and noticePO.title != ''">
+                title = #{noticePO.title},
+            </if>
+            <if test="noticePO.content != null and noticePO.content != ''">
+                content = #{noticePO.content},
+            </if>
+            <if test="noticePO.expiretime != null">
+                expiretime = #{noticePO.expiretime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="string">
+        delete from t_notice where id = #{id}
+    </delete>
+</mapper>
+

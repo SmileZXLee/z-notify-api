@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zxlee.znotifyapi.mapper.VersionMapper">
+    <select id="list" resultType="VersionPO" parameterType="Map">
+        select * from `t_version` where project_id = #{projectId}
+        <if test="keyword!='' and keyword!=null">
+            <bind name="pattern" value="'%' + keyword + '%'"/>
+            and `version` like #{pattern}
+        </if>
+        order by version desc
+    </select>
+
+    <select id="listByVersion" resultType="VersionPO" parameterType="string">
+        select * from `t_version` where project_id = #{projectId}
+        <![CDATA[
+              and `version` > #{version}
+        ]]>
+        order by `version` desc
+    </select>
+
+    <select id="listById" resultType="VersionPO" parameterType="string">
+        select * from `t_version` where id = #{id}
+    </select>
+
+    <insert id="insertOne" parameterType="VersionPO">
+        insert into `t_version`(`id`,`version`,`content`,`download_url`,`project_id`) VALUES (#{id},#{version},#{content},#{downloadUrl},#{projectId})
+    </insert>
+
+    <update id="updateOne">
+        update `t_version`
+        <set>
+            <if test="po.version != null and po.version != ''">
+                `version` = #{po.version},
+            </if>
+            <if test="po.content != null and po.content != ''">
+                `content` = #{po.content},
+            </if>
+            <if test="po.downloadUrl != null and po.downloadUrl != ''">
+                `download_url` = #{po.downloadUrl},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="string">
+        delete from `t_version` where id = #{id}
+    </delete>
+</mapper>
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Z-Notify验证消息</title>
+    </head>
+    <body tabindex="0" role="listitem">
+    <table width="700" border="0" align="center" cellspacing="0" style="width:700px;">
+        <tbody>
+        <tr>
+            <td>
+                <div style="width:700px;margin:0 auto;border-bottom:1px solid #ccc;margin-bottom:30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="700" height="39" style="font:18px Tahoma, Arial, 宋体;">
+                        <tbody><tr><td width="210"></td></tr></tbody>
+                    </table>
+                </div>
+                <div style="display: flex;justify-content: center;">
+                    <img src="https://admin.z-notify.zxlee.cn/logo.png" alt="" style="width: 100px;height: 100px;">
+                </div>
+                
+                <h2 style="margin-left: 10px;">🌈 感谢使用Z-Notify！</h2>
+                <div style="width:680px;padding:0 10px;margin:0 auto;">
+                    <div style="line-height:1.5;font-size:20px;margin-bottom:25px;color:#4d4d4d;">
+                        <strong style="display:block;margin-bottom:15px;">
+                            您正在进行<span style="color: #0480f3">注册账号/重置密码</span>操作，请在验证码输入框中输入：<br><span style="color: black;font-size: 72px;font-weight:bold;letter-spacing: 20px;font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;" th:text="${checkCode}"></span><br>以完成操作。
+                        </strong>
+                    </div>
+                    <div style="margin-bottom:30px;">
+                        <small style="display:block;margin-bottom:20px;font-size:20px;">
+                            <p style="color:#747474;">
+                                此验证码5分钟内有效
+                            </p>
+                        </small>
+                    </div>
+                </div>
+                <div style="width:700px;margin:0 auto;">
+                    <div style="padding:10px 10px 0;border-top:1px solid #ccc;color:#747474;margin-bottom:20px;line-height:1.3em;font-size:20px;">
+                        <p>此为系统邮件，请勿回复<br>
+                            请保管好您的验证码，避免账号被他人盗用
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </body>
+</html>
