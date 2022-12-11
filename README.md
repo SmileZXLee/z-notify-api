@@ -5,7 +5,7 @@
 <h1 align="center">Z-Notify-Api</h1>
 <h5 align="center">应用统一在线管理平台(api)</h5>
 
-## 常用链接
+## 链接
 
 * 后台管理页面地址：[https://admin.z-notify.zxlee.cn](https://admin.z-notify.zxlee.cn)
 
