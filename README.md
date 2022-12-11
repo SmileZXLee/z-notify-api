@@ -2,7 +2,7 @@
 <p align="center">
     <img alt="logo" src="https://admin.z-notify.zxlee.cn/logo.png" width="120" height="120" style="margin-bottom: 10px;">
 </p>
-<h3 align="center">Z-Notify-Api</h3>
+<h1 align="center">Z-Notify-Api</h1>
 <h5 align="center">应用统一在线管理平台</h5>
 
 ## 常用链接
