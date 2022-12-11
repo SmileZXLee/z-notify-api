@@ -9,6 +9,8 @@
 
 * 后台管理页面地址：[https://admin.z-notify.zxlee.cn](https://admin.z-notify.zxlee.cn)
 
+* 后台管理源码地址：[https://github.com/SmileZXLee/z-notify-admin-vue](https://github.com/SmileZXLee/z-notify-admin-vue)
+
 * API文档地址：[https://api.z-notify.zxlee.cn/swagger-ui/index.html](https://api.z-notify.zxlee.cn/swagger-ui/index.html)
 
 * API接口地址：[https://api.z-notify.zxlee.cn](https://api.z-notify.zxlee.cn)
