@@ -13,6 +13,10 @@
     </select>
 
     <select id="listByVersion" resultType="VersionPO" parameterType="string">
+        select * from `t_version` where project_id = #{projectId} and `version` = #{version} order by `version` desc
+    </select>
+
+    <select id="listByHigherVersion" resultType="VersionPO" parameterType="string">
         select * from `t_version` where project_id = #{projectId}
         <![CDATA[
               and `version` > #{version}

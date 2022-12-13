@@ -61,16 +61,16 @@ public class VersionService extends BaseInProjectService implements IVersionServ
         return versionMapper.deleteById(id);
     }
 
+    @Override
+    public List<VersionVO> publicListByVersion(String projectId, String version) {
+        return BeanConvertUtils.convertListTo(versionMapper.listByHigherVersion(projectId, version), VersionVO::new);
+    }
+
     private void checkForUpdate(String token, String id) {
         VersionPO versionPO = versionMapper.listById(id);
         if (null == versionPO) {
             throw new CommonException("此版本不存在");
         }
         checkIsCurrentProject(token, versionPO.getProjectId());
-    }
-
-    @Override
-    public List<VersionVO> publicListByVersion(String projectId, String version) {
-        return BeanConvertUtils.convertListTo(versionMapper.listByVersion(projectId, version), VersionVO::new);
     }
 }

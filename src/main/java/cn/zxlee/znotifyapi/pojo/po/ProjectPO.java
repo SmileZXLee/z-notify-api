@@ -18,4 +18,5 @@ public class ProjectPO extends BasePOJO {
     private String userId;
     private Long noticeCount;
     private Long textCount;
+    private Long versionCount;
 }

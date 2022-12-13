@@ -6,7 +6,8 @@
     <select id="list" resultType="ProjectPO">
         select id, project_name, createtime, updatetime, user_id,
         (SELECT COUNT(0) from t_notice WHERE t_notice.project_id = t_project.id) as notice_count,
-        (SELECT COUNT(0) from t_text WHERE t_text.project_id = t_project.id) as text_count
+        (SELECT COUNT(0) from t_text WHERE t_text.project_id = t_project.id) as text_count,
+        (SELECT COUNT(0) from t_version WHERE t_version.project_id = t_project.id) as version_count
         from t_project
         where user_id = #{userId}
         <if test="keyword!='' and keyword!=null">

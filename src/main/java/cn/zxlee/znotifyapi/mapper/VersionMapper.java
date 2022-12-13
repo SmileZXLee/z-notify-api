@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface VersionMapper extends BaseMapper<VersionPO> {
     List<VersionPO> listByVersion(String projectId, String version);
+
+    List<VersionPO> listByHigherVersion(String projectId, String version);
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * @program: z-notify-api
- * @description: 公用接口控制器RequestBody
+ * @description: 公用接口控制器
  * @author: zxlee
  * @create: 2022-11-25 17:41
  **/

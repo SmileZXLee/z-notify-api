@@ -38,6 +38,7 @@ public class VersionController {
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
+            put("keyword", bo.getKeyword());
         }};
         return Result.success(versionService.listByPage(params, bo));
     }
