@@ -25,4 +25,6 @@ public class ProjectVO extends BasePOJO {
     private Long textCount;
     @ApiModelProperty("version数量")
     private Long versionCount;
+    @ApiModelProperty("反馈数量")
+    private Long feedbackCount;
 }

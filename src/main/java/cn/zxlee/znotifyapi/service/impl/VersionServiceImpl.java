@@ -24,7 +24,7 @@ import java.util.Map;
  **/
 
 @Service
-public class VersionService extends BaseInProjectService implements IVersionService<VersionVO, VersionBO, VersionPageBO> {
+public class VersionServiceImpl extends BaseInProjectService implements IVersionService<VersionVO, VersionBO, VersionPageBO> {
     @Autowired
     private VersionMapper versionMapper;
 

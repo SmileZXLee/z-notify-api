@@ -19,4 +19,5 @@ public class ProjectPO extends BasePOJO {
     private Long noticeCount;
     private Long textCount;
     private Long versionCount;
+    private Long feedbackCount;
 }

@@ -16,5 +16,7 @@ public interface ProjectMapper {
 
     ProjectPO listById(String userId, String id);
 
+    ProjectPO publicListById(String id);
+
     int deleteById(String id);
 }

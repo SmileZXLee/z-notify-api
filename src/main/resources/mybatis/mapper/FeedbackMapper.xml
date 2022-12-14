@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zxlee.znotifyapi.mapper.FeedbackMapper">
+    <resultMap id="listResultMap" type="FeedbackPO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="contact" property="contact"/>
+        <result column="content" property="content"/>
+        <result column="extra_info" property="extraInfo"/>
+        <result column="project_id" property="projectId"/>
+        <result column="img_urls" property="imgUrls" typeHandler="cn.zxlee.znotifyapi.typeHandler.ImgsTypeHandler"/>
+        <result column="reply" property="reply"/>
+        <result column="createtime" property="createtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+
+    <select id="list" resultMap="listResultMap" parameterType="Map">
+        select * from `t_feedback` where project_id = #{projectId}
+        <if test="keyword!='' and keyword!=null">
+            <bind name="pattern" value="'%' + keyword + '%'"/>
+            and `username` like #{pattern}
+        </if>
+        order by updatetime desc
+    </select>
+
+    <select id="listById" resultType="VersionPO" parameterType="string">
+        select * from `t_feedback` where id = #{id}
+    </select>
+
+    <insert id="insertOne" parameterType="FeedbackPO">
+        insert into `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.typeHandler.ImgsTypeHandler},#{projectId})
+    </insert>
+
+    <update id="updateOne">
+        update `t_feedback`
+        <set>
+            <if test="po.version != null and po.version != ''">
+                `version` = #{po.version},
+            </if>
+            <if test="po.content != null and po.content != ''">
+                `content` = #{po.content},
+            </if>
+            <if test="po.downloadUrl != null and po.downloadUrl != ''">
+                `download_url` = #{po.downloadUrl},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="string">
+        delete from `t_feedback` where id = #{id}
+    </delete>
+</mapper>
+

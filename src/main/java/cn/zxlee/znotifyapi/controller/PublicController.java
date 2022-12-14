@@ -1,22 +1,26 @@
 package cn.zxlee.znotifyapi.controller;
 
 import cn.zxlee.znotifyapi.annotation.NoLoginAuth;
+import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
 import cn.zxlee.znotifyapi.pojo.vo.NoticeVO;
 import cn.zxlee.znotifyapi.pojo.vo.TextVO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
 import cn.zxlee.znotifyapi.response.Result;
+import cn.zxlee.znotifyapi.service.IFeedbackService;
 import cn.zxlee.znotifyapi.service.INoticeService;
 import cn.zxlee.znotifyapi.service.ITextService;
 import cn.zxlee.znotifyapi.service.IVersionService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import cn.zxlee.znotifyapi.utils.oss.IOssService;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -42,6 +46,12 @@ public class PublicController {
     @Autowired
     private IVersionService versionService;
 
+    @Autowired
+    private IFeedbackService feedbackService;
+
+    @Autowired
+    private IOssService ossService;
+
     @GetMapping("/notices/{project_id}")
     @ApiOperation("获取通知列表")
     @NoLoginAuth
@@ -62,5 +72,20 @@ public class PublicController {
     @NoLoginAuth
     public Result<List<VersionVO>> getVersions(@NotEmpty @PathVariable(value = "project_id") String projectId, @Pattern(regexp = "^\\d(.\\d)*$", message = "版本号格式不合法") @PathVariable(value = "version") String version){
         return Result.success(versionService.publicListByVersion(projectId, version));
+    }
+
+    @PostMapping("/feedback/feedback")
+    @ApiOperation("添加反馈数据")
+    @NoLoginAuth
+    public Result<List<VersionVO>> saveFeedback(@Validated @RequestBody FeedbackBO bo){
+        int result = feedbackService.publicSaveOne(bo);
+        return result > 0 ? Result.success() : Result.fail("添加失败");
+    }
+
+    @PostMapping(value = "/upload/uploadFiles", headers = "content-type=multipart/form-data")
+    @ApiOperation("文件上传，支持多个文件同时上传，每个文件上限为1MB")
+    @NoLoginAuth
+    public Result<List<String>> uploadFiles(@RequestPart(value = "files", required = true) MultipartFile[] files) {
+        return Result.success(ossService.uploadFiles(files));
     }
 }

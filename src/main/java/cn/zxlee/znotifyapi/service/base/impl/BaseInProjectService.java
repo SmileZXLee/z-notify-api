@@ -45,4 +45,11 @@ public abstract class BaseInProjectService extends BaseService {
             throw new CommonException("当前项目不存在");
         }
     }
+
+    protected void checkHasProject(String projectId) {
+        ProjectPO projectPO = projectMapper.publicListById(projectId);
+        if (null == projectPO) {
+            throw new CommonException("当前项目不存在");
+        }
+    }
 }

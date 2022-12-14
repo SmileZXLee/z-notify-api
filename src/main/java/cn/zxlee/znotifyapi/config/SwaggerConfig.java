@@ -40,8 +40,9 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("z-notify-api接口文档")
                 .description("")
+                .termsOfServiceUrl("https://github.com/SmileZXLee/z-notify-api")
                 .contact(new Contact("zxlee","https://github.com/SmileZXLee","admin@zxlee.cn"))
-                .version("1.0")
+                .version("0.0.1")
                 .build();
     }
 
