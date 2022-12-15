@@ -25,25 +25,23 @@
         order by updatetime desc
     </select>
 
-    <select id="listById" resultType="VersionPO" parameterType="string">
+    <select id="listById" resultType="FeedbackPO" parameterType="string">
         select * from `t_feedback` where id = #{id}
+    </select>
+
+    <select id="listByUsername" resultType="FeedbackPO" parameterType="string">
+        select * from `t_feedback` where `project_id` = #{projectId} and `username` = #{username}
     </select>
 
     <insert id="insertOne" parameterType="FeedbackPO">
         insert into `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.typeHandler.ImgsTypeHandler},#{projectId})
     </insert>
 
-    <update id="updateOne">
+    <update id="updateReply">
         update `t_feedback`
         <set>
-            <if test="po.version != null and po.version != ''">
-                `version` = #{po.version},
-            </if>
-            <if test="po.content != null and po.content != ''">
-                `content` = #{po.content},
-            </if>
-            <if test="po.downloadUrl != null and po.downloadUrl != ''">
-                `download_url` = #{po.downloadUrl},
+            <if test="bo.reply != null and bo.reply != ''">
+                `reply` = #{bo.reply},
             </if>
         </set>
         where id = #{id}

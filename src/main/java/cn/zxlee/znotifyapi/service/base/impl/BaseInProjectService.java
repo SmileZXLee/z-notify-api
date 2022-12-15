@@ -2,15 +2,13 @@ package cn.zxlee.znotifyapi.service.base.impl;
 
 import cn.zxlee.znotifyapi.exception.CommonException;
 import cn.zxlee.znotifyapi.mapper.ProjectMapper;
+import cn.zxlee.znotifyapi.mapper.base.BaseMapper;
 import cn.zxlee.znotifyapi.pojo.bo.base.PageBO;
 import cn.zxlee.znotifyapi.pojo.po.ProjectPO;
-import cn.zxlee.znotifyapi.pojo.vo.ProjectVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
-import cn.zxlee.znotifyapi.utils.BeanConvertUtils;
+import cn.zxlee.znotifyapi.utils.DataHandleUtils;
 import cn.zxlee.znotifyapi.utils.TokenUtils;
 import com.github.pagehelper.ISelect;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
@@ -51,5 +49,13 @@ public abstract class BaseInProjectService extends BaseService {
         if (null == projectPO) {
             throw new CommonException("当前项目不存在");
         }
+    }
+
+    protected <P> void checkInProjectForUpdate(BaseMapper<P> mapper, String token, String id) {
+        P po = mapper.listById(id);
+        if (null == po) {
+            throw new CommonException("此id对应数据不存在");
+        }
+        checkIsCurrentProject(token, DataHandleUtils.getFieldValueByName("projectId", po).toString());
     }
 }

@@ -28,7 +28,7 @@ public class FeedbackVO extends BasePOJO {
     @ApiModelProperty("反馈图片地址")
     private List imgUrls;
     @ApiModelProperty("回复内容")
-    private List reply;
+    private String reply;
     @ApiModelProperty("项目id")
     private String projectId;
 }

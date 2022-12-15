@@ -19,5 +19,6 @@ public class FeedbackPO extends BasePOJO {
     private String contact;
     private String content;
     private String extraInfo;
+    private String reply;
     private List imgUrls;
 }

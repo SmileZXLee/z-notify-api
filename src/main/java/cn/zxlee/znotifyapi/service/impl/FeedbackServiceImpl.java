@@ -1,9 +1,12 @@
 package cn.zxlee.znotifyapi.service.impl;
 
+import cn.zxlee.znotifyapi.exception.CommonException;
 import cn.zxlee.znotifyapi.mapper.FeedbackMapper;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackPageBO;
+import cn.zxlee.znotifyapi.pojo.bo.FeedbackReplyBO;
 import cn.zxlee.znotifyapi.pojo.po.FeedbackPO;
+import cn.zxlee.znotifyapi.pojo.po.VersionPO;
 import cn.zxlee.znotifyapi.pojo.vo.FeedbackVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IFeedbackService;
@@ -51,12 +54,24 @@ public class FeedbackServiceImpl extends BaseInProjectService implements IFeedba
 
     @Override
     public int deleteById(Map map, String id) {
-        return 0;
+        super.<FeedbackPO>checkInProjectForUpdate(feedbackMapper, map.get("token").toString(), id);
+        return feedbackMapper.deleteById(id);
     }
 
     @Override
     public int publicSaveOne(FeedbackBO bo) {
         checkHasProject(bo.getProjectId());
         return feedbackMapper.insertOne(BeanConvertUtils.convertTo(bo, FeedbackPO::new));
+    }
+
+    @Override
+    public int updateReply(String token, String id, FeedbackReplyBO bo) {
+        super.<FeedbackPO>checkInProjectForUpdate(feedbackMapper, token, id);
+        return feedbackMapper.updateReply(id, bo);
+    }
+
+    @Override
+    public List<FeedbackVO> publicListByUsername(String projectId, String username) {
+        return BeanConvertUtils.convertListTo(feedbackMapper.listByUsername(projectId, username), FeedbackVO::new);
     }
 }

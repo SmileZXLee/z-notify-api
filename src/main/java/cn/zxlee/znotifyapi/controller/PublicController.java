@@ -2,6 +2,7 @@ package cn.zxlee.znotifyapi.controller;
 
 import cn.zxlee.znotifyapi.annotation.NoLoginAuth;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
+import cn.zxlee.znotifyapi.pojo.vo.FeedbackVO;
 import cn.zxlee.znotifyapi.pojo.vo.NoticeVO;
 import cn.zxlee.znotifyapi.pojo.vo.TextVO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
@@ -77,9 +78,16 @@ public class PublicController {
     @PostMapping("/feedback/feedback")
     @ApiOperation("添加反馈数据")
     @NoLoginAuth
-    public Result<List<VersionVO>> saveFeedback(@Validated @RequestBody FeedbackBO bo){
+    public Result saveFeedback(@Validated @RequestBody FeedbackBO bo){
         int result = feedbackService.publicSaveOne(bo);
         return result > 0 ? Result.success() : Result.fail("添加失败");
+    }
+
+    @GetMapping("/feedbacks/{project_id}/{username}")
+    @ApiOperation("查询某个用户下的反馈列表")
+    @NoLoginAuth
+    public Result<List<FeedbackVO>> getFeedbacks(@NotEmpty @PathVariable(value = "project_id") String projectId, @PathVariable(value = "username") String username){
+        return Result.success(feedbackService.publicListByUsername(projectId, username));
     }
 
     @PostMapping(value = "/upload/uploadFiles", headers = "content-type=multipart/form-data")

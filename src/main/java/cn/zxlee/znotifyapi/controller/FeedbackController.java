@@ -1,6 +1,8 @@
 package cn.zxlee.znotifyapi.controller;
 
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackPageBO;
+import cn.zxlee.znotifyapi.pojo.bo.FeedbackReplyBO;
+import cn.zxlee.znotifyapi.pojo.bo.TextBO;
 import cn.zxlee.znotifyapi.pojo.bo.VersionPageBO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
@@ -34,12 +36,29 @@ public class FeedbackController {
 
     @GetMapping("/feedbacks/{project_id}")
     @ApiOperation("获取项目下的反馈列表")
-    public Result<PageResultVO<VersionVO>> getFeedbackss(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated FeedbackPageBO bo){
+    public Result<PageResultVO<VersionVO>> getFeedbacks(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated FeedbackPageBO bo){
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
             put("keyword", bo.getKeyword());
         }};
         return Result.success(feedbackService.listByPage(params, bo));
+    }
+
+    @PutMapping("/reply/{id}")
+    @ApiOperation("回复用户反馈")
+    public Result replayFeedback(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String id, @Validated @RequestBody FeedbackReplyBO bo){
+        int result = feedbackService.updateReply(token, id, bo);
+        return result > 0 ? Result.success() : Result.fail("回复失败");
+    }
+
+    @DeleteMapping("/feedback/{id}")
+    @ApiOperation("删除一条反馈")
+    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String id) {
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("token", token);
+        }};
+        int result = feedbackService.deleteById(params, id);
+        return result > 0 ? Result.success() : Result.fail("删除失败");
     }
 }

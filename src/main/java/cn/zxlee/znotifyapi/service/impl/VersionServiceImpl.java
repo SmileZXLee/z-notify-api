@@ -51,13 +51,13 @@ public class VersionServiceImpl extends BaseInProjectService implements IVersion
 
     @Override
     public int updateOne(Map map, String id, VersionBO bo) {
-        checkForUpdate(map.get("token").toString(), id);
+        super.<VersionPO>checkInProjectForUpdate(versionMapper, map.get("token").toString(), id);
         return versionMapper.updateOne(id, BeanConvertUtils.convertTo(bo, VersionPO::new));
     }
 
     @Override
     public int deleteById(Map map, String id) {
-        checkForUpdate(map.get("token").toString(), id);
+        super.<VersionPO>checkInProjectForUpdate(versionMapper, map.get("token").toString(), id);
         return versionMapper.deleteById(id);
     }
 
@@ -66,11 +66,4 @@ public class VersionServiceImpl extends BaseInProjectService implements IVersion
         return BeanConvertUtils.convertListTo(versionMapper.listByHigherVersion(projectId, version), VersionVO::new);
     }
 
-    private void checkForUpdate(String token, String id) {
-        VersionPO versionPO = versionMapper.listById(id);
-        if (null == versionPO) {
-            throw new CommonException("此版本不存在");
-        }
-        checkIsCurrentProject(token, versionPO.getProjectId());
-    }
 }
