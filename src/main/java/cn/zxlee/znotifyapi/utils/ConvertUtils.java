@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class ConvertUtils {
 
     public static String imgList2Str(List imgList) {
-        if (null == imgList && imgList.isEmpty()) {
+        if (null == imgList || imgList.isEmpty()) {
             return null;
         }
         return imgList.stream().collect(Collectors.joining(";")).toString();

@@ -10,7 +10,7 @@
         <result column="content" property="content"/>
         <result column="extra_info" property="extraInfo"/>
         <result column="project_id" property="projectId"/>
-        <result column="img_urls" property="imgUrls" typeHandler="cn.zxlee.znotifyapi.typeHandler.ImgsTypeHandler"/>
+        <result column="img_urls" property="imgUrls" typeHandler="cn.zxlee.znotifyapi.resolver.ImgsTypeHandler"/>
         <result column="reply" property="reply"/>
         <result column="createtime" property="createtime"/>
         <result column="updatetime" property="updatetime"/>
@@ -22,19 +22,19 @@
             <bind name="pattern" value="'%' + keyword + '%'"/>
             and `username` like #{pattern}
         </if>
-        order by updatetime desc
+        order by updatetime, createtime desc
     </select>
 
     <select id="listById" resultType="FeedbackPO" parameterType="string">
         select * from `t_feedback` where id = #{id}
     </select>
 
-    <select id="listByUsername" resultType="FeedbackPO" parameterType="string">
-        select * from `t_feedback` where `project_id` = #{projectId} and `username` = #{username}
+    <select id="listByUsername" resultMap="listResultMap" parameterType="string">
+        select * from `t_feedback` where `project_id` = #{projectId} and `username` = #{username} order by createtime desc
     </select>
 
     <insert id="insertOne" parameterType="FeedbackPO">
-        insert into `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.typeHandler.ImgsTypeHandler},#{projectId})
+        insert into `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.resolver.ImgsTypeHandler},#{projectId})
     </insert>
 
     <update id="updateReply">

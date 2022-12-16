@@ -1,4 +1,4 @@
-package cn.zxlee.znotifyapi.typeHandler;
+package cn.zxlee.znotifyapi.resolver;
 
 import cn.zxlee.znotifyapi.utils.ConvertUtils;
 import org.apache.ibatis.type.BaseTypeHandler;
