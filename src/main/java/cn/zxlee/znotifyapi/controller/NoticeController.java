@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,27 +36,38 @@ public class NoticeController {
     @GetMapping("/notices/{project_id}")
     @ApiOperation("获取项目下的通知列表")
     public Result<PageResultVO<NoticeVO>> getNotices(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated NoticePageBO bo){
-        return Result.success(noticeService.listByPage(token, projectId, bo));
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("token", token);
+            put("projectId", projectId);
+            put("keyword", bo.getTitle());
+        }};
+        return Result.success(noticeService.listByPage(params, bo));
     }
 
     @PostMapping("/notice")
     @ApiOperation("添加一条通知")
     public Result saveNotice(@RequestHeader String token, @Validated @RequestBody NoticeBO bo){
-        int result = noticeService.saveNotice(token, bo);
+        int result = noticeService.saveOne(token, bo);
         return result > 0 ? Result.success() : Result.fail("添加失败");
     }
 
     @PutMapping("/notice/{id}")
     @ApiOperation("更新一条通知")
     public Result updateNotice(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String noticeId, @Validated @RequestBody NoticeBO bo){
-        int result = noticeService.updateNotice(token, noticeId, bo);
+        HashMap<String, String> params  = new HashMap<String, String>() {{
+            put("token", token);
+        }};
+        int result = noticeService.updateOne(params, noticeId, bo);
         return result > 0 ? Result.success() : Result.fail("更新失败");
     }
 
     @DeleteMapping("/notice/{id}")
     @ApiOperation("删除一条通知")
     public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String noticeId){
-        int result = noticeService.deleteById(token, noticeId);
+        HashMap<String, String> params  = new HashMap<String, String>() {{
+            put("token", token);
+        }};
+        int result = noticeService.deleteById(params, noticeId);
         return result > 0 ? Result.success() : Result.fail("删除失败");
     }
 }

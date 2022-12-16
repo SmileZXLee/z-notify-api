@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * @author: zxlee
  * @create: 2022-12-11 17:07
  **/
-public abstract class BaseInProjectService extends BaseService {
+public abstract class BaseInProjectServiceImpl extends BaseServiceImpl {
 
     @Autowired
     private ProjectMapper projectMapper;
@@ -28,7 +28,7 @@ public abstract class BaseInProjectService extends BaseService {
     @Autowired
     private TokenUtils tokenUtils;
 
-    public PageResultVO baseListByPage(PageBO pageBO, Map params, Supplier targetSupplier, ISelect select) {
+    protected PageResultVO baseListByPage(PageBO pageBO, Map params, Supplier targetSupplier, ISelect select) {
         checkIsCurrentProject(params.get("token").toString(), params.get("projectId").toString());
         return super.baseListByPage(pageBO, targetSupplier, select);
     }
@@ -38,7 +38,7 @@ public abstract class BaseInProjectService extends BaseService {
      * 必须添加当前用户id的过滤条件，避免绕过用户直接添加通知
      */
     protected void checkIsCurrentProject(String token, String projectId) {
-        ProjectPO projectPO = projectMapper.listById(tokenUtils.getUserIdByToken(token), projectId);
+        ProjectPO projectPO = projectMapper.listByUserIdAndId(tokenUtils.getUserIdByToken(token), projectId);
         if (null == projectPO) {
             throw new CommonException("当前项目不存在");
         }

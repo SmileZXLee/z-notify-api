@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,20 +37,26 @@ public class ProjectController {
     @GetMapping("/projects")
     @ApiOperation("获取项目列表")
     public Result<PageResultVO<ProjectVO>> getProjects(@RequestHeader String token, @Validated ProjectPageBO bo){
-        return Result.success(projectService.listByPage(token, bo));
+        HashMap<String, String> params  = new HashMap<String, String>() {{
+            put("token", token);
+        }};
+        return Result.success(projectService.listByPage(params, bo));
     }
 
     @PostMapping("/project")
     @ApiOperation("添加一条项目")
     public Result saveProject(@RequestHeader String token, @Validated @RequestBody ProjectBO bo){
-        int result = projectService.saveProject(token, bo);
+        int result = projectService.saveOne(token, bo);
         return result > 0 ? Result.success() : Result.fail("添加失败");
     }
 
     @DeleteMapping("/project/{project_id}")
     @ApiOperation("删除一条项目")
     public Result deleteProject(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId){
-        int result = projectService.deleteById(token, projectId);
+        HashMap<String, String> params  = new HashMap<String, String>() {{
+            put("token", token);
+        }};
+        int result = projectService.deleteById(params, projectId);
         return result > 0 ? Result.success() : Result.fail("删除失败");
     }
 }

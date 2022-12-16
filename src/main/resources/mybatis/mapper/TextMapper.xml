@@ -4,41 +4,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.TextMapper">
     <select id="list" resultType="TextPO" parameterType="string">
-        select * from t_text where project_id = #{projectId}
+        select * from `t_text` where `project_id` = #{projectId}
         <if test="keyword!='' and keyword!=null">
             <bind name="pattern" value="'%' + keyword + '%'"/>
             and `key` like #{pattern}
         </if>
-        order by createtime desc
+        order by `createtime` desc
     </select>
 
     <select id="listByKey" resultType="TextPO" parameterType="string">
-        select * from t_text where project_id = #{projectId} and `key` = #{key} order by createtime desc
+        select * from `t_text` where `project_id` = #{projectId} and `key` = #{key} order by `createtime` desc
     </select>
 
     <select id="listById" resultType="TextPO" parameterType="string">
-        select * from t_text where id = #{id}
+        select * from `t_text` where `id` = #{id}
     </select>
 
     <insert id="insertOne" parameterType="TextPO">
-        insert into t_text(id,`key`,`value`,project_id) VALUES (#{id},#{key},#{value},#{projectId})
+        insert into `t_text`(`id`, `key`, `value`, `project_id`) VALUES (#{id},#{key},#{value},#{projectId})
     </insert>
 
     <update id="updateOne">
-        update t_text
+        update `t_text`
         <set>
-            <if test="textPO.key != null and textPO.key != ''">
-                `key` = #{textPO.key},
+            <if test="po.key != null and po.key != ''">
+                `key` = #{po.key},
             </if>
-            <if test="textPO.value != null and textPO.value != ''">
-                `value` = #{textPO.value},
+            <if test="po.value != null and po.value != ''">
+                `value` = #{po.value},
             </if>
         </set>
         where id = #{id}
     </update>
 
     <delete id="deleteById" parameterType="string">
-        delete from t_text where id = #{id}
+        delete from `t_text` where id = #{id}
     </delete>
 </mapper>
 

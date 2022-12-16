@@ -1,18 +1,15 @@
 package cn.zxlee.znotifyapi.service.impl;
 
-import cn.zxlee.znotifyapi.exception.CommonException;
 import cn.zxlee.znotifyapi.mapper.FeedbackMapper;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackPageBO;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackReplyBO;
 import cn.zxlee.znotifyapi.pojo.po.FeedbackPO;
-import cn.zxlee.znotifyapi.pojo.po.VersionPO;
 import cn.zxlee.znotifyapi.pojo.vo.FeedbackVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IFeedbackService;
-import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectService;
+import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectServiceImpl;
 import cn.zxlee.znotifyapi.utils.BeanConvertUtils;
-import cn.zxlee.znotifyapi.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +24,7 @@ import java.util.Map;
  **/
 
 @Service
-public class FeedbackServiceImpl extends BaseInProjectService implements IFeedbackService<FeedbackVO, FeedbackBO, FeedbackPageBO> {
+public class FeedbackServiceImpl extends BaseInProjectServiceImpl implements IFeedbackService<FeedbackVO, FeedbackBO, FeedbackPageBO> {
 
     @Autowired
     private FeedbackMapper feedbackMapper;

@@ -8,7 +8,7 @@ import cn.zxlee.znotifyapi.pojo.po.VersionPO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IVersionService;
-import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectService;
+import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectServiceImpl;
 import cn.zxlee.znotifyapi.utils.BeanConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.Map;
  **/
 
 @Service
-public class VersionServiceImpl extends BaseInProjectService implements IVersionService<VersionVO, VersionBO, VersionPageBO> {
+public class VersionServiceImpl extends BaseInProjectServiceImpl implements IVersionService<VersionVO, VersionBO, VersionPageBO> {
     @Autowired
     private VersionMapper versionMapper;
 
@@ -45,8 +45,7 @@ public class VersionServiceImpl extends BaseInProjectService implements IVersion
         if (null != oldPOList && oldPOList.size() > 0) {
             throw new CommonException("此版本号已存在");
         }
-        VersionPO versionPO = BeanConvertUtils.convertTo(bo, VersionPO::new);
-        return versionMapper.insertOne(versionPO);
+        return versionMapper.insertOne(BeanConvertUtils.convertTo(bo, VersionPO::new));
     }
 
     @Override

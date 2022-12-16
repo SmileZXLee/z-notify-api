@@ -8,14 +8,15 @@ import cn.zxlee.znotifyapi.pojo.po.ProjectPO;
 import cn.zxlee.znotifyapi.pojo.vo.ProjectVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IProjectService;
+import cn.zxlee.znotifyapi.service.base.impl.BaseServiceImpl;
 import cn.zxlee.znotifyapi.utils.BeanConvertUtils;
 import cn.zxlee.znotifyapi.utils.TokenUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: z-notify-api
@@ -25,7 +26,7 @@ import java.util.List;
  **/
 
 @Service
-public class ProjectServiceImpl implements IProjectService {
+public class ProjectServiceImpl extends BaseServiceImpl implements IProjectService<ProjectVO, ProjectBO, ProjectPageBO> {
     @Autowired
     private ProjectMapper projectMapper;
 
@@ -33,35 +34,34 @@ public class ProjectServiceImpl implements IProjectService {
     private TokenUtils tokenUtils;
 
     @Override
-    public List<ProjectVO> list(String token, String keyword) {
-        List<ProjectPO> list = projectMapper.list(tokenUtils.getUserIdByToken(token), keyword);
-        return BeanConvertUtils.convertListTo(list, ProjectVO::new);
+    public List<ProjectVO> list(Map map) {
+        HashMap<String, String> params  = new HashMap<String, String>() {{
+            put("userId", tokenUtils.getUserIdByToken(map.get("token").toString()));
+            put("keyword", map.get("keyword").toString());
+        }};
+        return BeanConvertUtils.convertListTo(projectMapper.list(params), ProjectVO::new);
     }
 
     @Override
-    public PageResultVO<ProjectVO> listByPage(String token, ProjectPageBO projectBO) {
-        PageResultVO<ProjectVO> pageResultVO = new PageResultVO<>();
-
-        PageHelper.startPage(projectBO.getCurrent(), projectBO.getPageSize());
-        List<ProjectPO> projectPOList = projectMapper.list(tokenUtils.getUserIdByToken(token), projectBO.getKeyword());
-        PageInfo<ProjectPO> pageInfo = new PageInfo<>(projectPOList);
-        pageResultVO.setCurrent(pageInfo.getPageNum());
-        pageResultVO.setPageSize(pageInfo.getPageSize());
-        pageResultVO.setTotal(pageInfo.getTotal());
-        pageResultVO.setResults(BeanConvertUtils.convertListTo(pageInfo.getList(), ProjectVO::new));
-
-        PageHelper.clearPage();
-        return pageResultVO;
+    public PageResultVO<ProjectVO> listByPage(Map map, ProjectPageBO pageBO) {
+        map.put("userId", tokenUtils.getUserIdByToken(map.get("token").toString()));
+        return baseListByPage(pageBO, ProjectVO::new, () -> projectMapper.list(map));
     }
 
     @Override
-    public int saveProject(String token, ProjectBO projectBO) {
+    public int saveOne(String token, ProjectBO projectBO) {
         ProjectPO oldProjectPO = projectMapper.listByName(tokenUtils.getUserIdByToken(token), projectBO.getProjectName());
         if (null != oldProjectPO) {
             throw new CommonException("此项目名称已存在");
         }
         ProjectPO projectPO = BeanConvertUtils.convertTo(projectBO, ProjectPO::new);
-        return projectMapper.insertProject(tokenUtils.getUserIdByToken(token), projectPO);
+        projectPO.setUserId(tokenUtils.getUserIdByToken(token));
+        return projectMapper.insertOne(projectPO);
+    }
+
+    @Override
+    public int updateOne(Map map, String id, ProjectBO bo) {
+        return 0;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     @Override
-    public int deleteById(String token, String id) {
-        ProjectPO projectPO = projectMapper.listById(tokenUtils.getUserIdByToken(token), id);
+    public int deleteById(Map map, String id) {
+        ProjectPO projectPO = projectMapper.listByUserIdAndId(tokenUtils.getUserIdByToken(map.get("token").toString()), id);
         if (null == projectPO) {
             throw new CommonException("当前项目不存在");
         }
