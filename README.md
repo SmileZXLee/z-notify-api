@@ -15,6 +15,17 @@
 
 * API接口地址：[https://api.z-notify.zxlee.cn](https://api.z-notify.zxlee.cn)
 
+## 主要功能
+- [x] 版本管理
+
+- [x] 通知管理
+
+- [x] 通用文本管理
+
+- [x] 反馈管理
+
+- [ ] 用户流量统计
+
 ## 使用到的技术
 * spring-boot+druid+mybatis实现接口处理和数据库访问，数据库使用MySQL
 * 接口风格遵循RESTful Api规范；接口文档使用swagger3.0生成
@@ -26,4 +37,4 @@
 * 多文件上传至oss
 
 ## 其他功能
-正在开发(有空慢慢完善)
+正在开发...
