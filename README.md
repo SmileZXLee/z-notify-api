@@ -11,9 +11,10 @@
 
 * 后台管理源码地址：[https://github.com/SmileZXLee/z-notify-admin-vue](https://github.com/SmileZXLee/z-notify-admin-vue)
 
+* 公共页(反馈页)源码地址：[https://github.com/SmileZXLee/z-notify-public](https://github.com/SmileZXLee/z-notify-public)
+
 * API文档地址：[https://api.z-notify.zxlee.cn/swagger-ui/index.html](https://api.z-notify.zxlee.cn/swagger-ui/index.html)
 
-* API接口地址：[https://api.z-notify.zxlee.cn](https://api.z-notify.zxlee.cn)
 
 ## 主要功能
 - [x] 版本管理
