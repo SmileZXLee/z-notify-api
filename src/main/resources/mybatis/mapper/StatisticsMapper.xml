@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.StatisticsMapper">
     <select id="list" resultType="StatisticsPO" parameterType="Map">
-        select * from `t_statistics` where project_id = #{projectId}
-        order by createtime desc
+        select * from `t_statistics` where `project_id` = #{projectId}
+        order by `createtime` desc
     </select>
 
     <select id="listGroupByIp" resultType="StatisticsPO" parameterType="string">
-        select * from `t_statistics` where `project_id` = #{projectId} GROUP BY `ip` order by createtime desc
+        select * from `t_statistics` where `project_id` = #{projectId} GROUP BY `ip` order by `createtime` desc
     </select>
 
     <select id="listCount" resultType="int" parameterType="string">
@@ -17,7 +17,7 @@
     </select>
 
     <select id="listById" resultType="StatisticsPO" parameterType="string">
-        select * from `t_statistics` where id = #{id}
+        select * from `t_statistics` where `id` = #{id}
     </select>
 
     <insert id="insertOne" parameterType="StatisticsPO">
@@ -25,7 +25,7 @@
     </insert>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_statistics` where id = #{id}
+        delete from `t_statistics` where `id` = #{id}
     </delete>
 </mapper>
 

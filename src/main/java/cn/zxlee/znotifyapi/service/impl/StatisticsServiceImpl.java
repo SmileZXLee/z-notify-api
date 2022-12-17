@@ -2,6 +2,7 @@ package cn.zxlee.znotifyapi.service.impl;
 
 import cn.zxlee.znotifyapi.mapper.StatisticsMapper;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsBO;
+import cn.zxlee.znotifyapi.pojo.bo.StatisticsPageBO;
 import cn.zxlee.znotifyapi.pojo.po.StatisticsPO;
 import cn.zxlee.znotifyapi.pojo.vo.StatisticsResultVO;
 import cn.zxlee.znotifyapi.pojo.vo.StatisticsVO;
@@ -9,12 +10,10 @@ import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IStatisticsService;
 import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectServiceImpl;
 import cn.zxlee.znotifyapi.utils.BeanConvertUtils;
-import cn.zxlee.znotifyapi.utils.IpUtils;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ import java.util.Map;
  **/
 
 @Service
-public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements IStatisticsService<StatisticsVO, StatisticsBO, Object> {
+public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements IStatisticsService<StatisticsVO, StatisticsBO, StatisticsPageBO> {
 
     @Autowired
     private StatisticsMapper statisticsMapper;
@@ -40,8 +39,8 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
     }
 
     @Override
-    public PageResultVO<StatisticsVO> listByPage(Map map, Object pageBO) {
-        return null;
+    public PageResultVO<StatisticsVO> listByPage(Map map, StatisticsPageBO pageBO) {
+        return baseListByPage(pageBO, map, StatisticsVO::new, () -> statisticsMapper.list(map));
     }
 
     @Override
