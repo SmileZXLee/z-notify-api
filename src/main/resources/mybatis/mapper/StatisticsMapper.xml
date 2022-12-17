@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zxlee.znotifyapi.mapper.StatisticsMapper">
+    <select id="list" resultType="StatisticsPO" parameterType="Map">
+        select * from `t_statistics` where project_id = #{projectId}
+        order by createtime desc
+    </select>
+
+    <select id="listGroupByIp" resultType="StatisticsPO" parameterType="string">
+        select * from `t_statistics` where `project_id` = #{projectId} GROUP BY `ip` order by createtime desc
+    </select>
+
+    <select id="listCount" resultType="int" parameterType="string">
+        select COUNT(0) from `t_statistics` where `project_id` = #{projectId}
+    </select>
+
+    <select id="listById" resultType="StatisticsPO" parameterType="string">
+        select * from `t_statistics` where id = #{id}
+    </select>
+
+    <insert id="insertOne" parameterType="StatisticsPO">
+        insert into `t_statistics`(`id`,`ip`,`ip_region`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{projectId})
+    </insert>
+
+    <delete id="deleteById" parameterType="string">
+        delete from `t_statistics` where id = #{id}
+    </delete>
+</mapper>
+
