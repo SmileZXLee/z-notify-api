@@ -6,16 +6,16 @@ import lombok.Data;
 
 /**
  * @program: z-notify-api
- * @description: StatisticsResultVO
+ * @description: StatisticsRegionCountVO
  * @author: zxlee
  * @create: 2022-12-17 17:05
  **/
 
 @Data
-@ApiModel("统计结果VO")
-public class StatisticsResultVO {
+@ApiModel("统计结果ip归属地VO")
+public class StatisticsRegionCountVO {
+    @ApiModelProperty("ip归属地")
+    private String region;
     @ApiModelProperty("访问次数")
-    private Integer viewCount;
-    @ApiModelProperty("根据ip区分访问次数，相同ip只算一次")
-    private Integer visitorCount;
+    private Integer count;
 }

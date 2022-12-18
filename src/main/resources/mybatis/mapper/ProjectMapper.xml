@@ -4,38 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.ProjectMapper">
     <select id="list" resultType="ProjectPO">
-        select `id`, `project_name`, `createtime`, `updatetime`, `user_id`,
-        (SELECT COUNT(0) from `t_notice` WHERE `t_notice`.`project_id` = `t_project`.`id`) as `notice_count`,
-        (SELECT COUNT(0) from `t_text` WHERE `t_text`.`project_id` = `t_project`.`id`) as `text_count`,
-        (SELECT COUNT(0) from `t_version` WHERE `t_version`.`project_id` = `t_project`.`id`) as `version_count`,
-        (SELECT COUNT(0) from `t_feedback` WHERE `t_feedback`.`project_id` = `t_project`.`id`) as `feedback_count`
-        from `t_project`
-        where `user_id` = #{userId}
+        SELECT `id`, `project_name`, `createtime`, `updatetime`, `user_id`,
+        (SELECT COUNT(0) FROM `t_notice` WHERE `t_notice`.`project_id` = `t_project`.`id`) AS `notice_count`,
+        (SELECT COUNT(0) FROM `t_text` WHERE `t_text`.`project_id` = `t_project`.`id`) AS `text_count`,
+        (SELECT COUNT(0) FROM `t_version` WHERE `t_version`.`project_id` = `t_project`.`id`) AS `version_count`,
+        (SELECT COUNT(0) FROM `t_feedback` WHERE `t_feedback`.`project_id` = `t_project`.`id`) AS `feedback_count`
+        FROM `t_project`
+        WHERE `user_id` = #{userId}
         <if test="keyword!='' and keyword!=null">
             <bind name="pattern" value="'%' + keyword + '%'"/>
-            and `project_name` like #{pattern}
+            AND `project_name` LIKE #{pattern}
         </if>
-        order by `createtime` desc
+        ORDER BY `createtime` DESC
     </select>
 
     <select id="listByName" resultType="ProjectPO" parameterType="string">
-        select * from `t_project` where `user_id` = #{userId} and `project_name` = #{projectName}
+        SELECT * FROM `t_project` WHERE `user_id` = #{userId} AND `project_name` = #{projectName}
     </select>
 
     <select id="listByUserIdAndId" resultType="ProjectPO" parameterType="string">
-        select * from `t_project` where `user_id` = #{userId} and `id` = #{id}
+        SELECT * FROM `t_project` WHERE `user_id` = #{userId} AND `id` = #{id}
     </select>
 
     <select id="publicListById" resultType="ProjectPO" parameterType="string">
-        select * from `t_project` where `id` = #{id}
+        SELECT * FROM `t_project` WHERE `id` = #{id}
     </select>
 
     <insert id="insertOne">
-        insert into `t_project` (`id`, `project_name`, `user_id`) VALUES (#{id},#{projectName},#{userId})
+        INSERT INTO `t_project` (`id`, `project_name`, `user_id`) VALUES (#{id},#{projectName},#{userId})
     </insert>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_project` where `id` = #{id}
+        DELETE FROM `t_project` WHERE `id` = #{id}
     </delete>
 </mapper>
 

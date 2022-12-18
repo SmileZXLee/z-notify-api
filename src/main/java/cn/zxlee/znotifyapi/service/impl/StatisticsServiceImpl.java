@@ -4,8 +4,7 @@ import cn.zxlee.znotifyapi.mapper.StatisticsMapper;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsBO;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsPageBO;
 import cn.zxlee.znotifyapi.pojo.po.StatisticsPO;
-import cn.zxlee.znotifyapi.pojo.vo.StatisticsResultVO;
-import cn.zxlee.znotifyapi.pojo.vo.StatisticsVO;
+import cn.zxlee.znotifyapi.pojo.vo.*;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.service.IStatisticsService;
 import cn.zxlee.znotifyapi.service.base.impl.BaseInProjectServiceImpl;
@@ -75,6 +74,37 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
         StatisticsResultVO statisticsResultVO = new StatisticsResultVO();
         statisticsResultVO.setViewCount(statisticsListCount);
         statisticsResultVO.setVisitorCount(null == statisticsPOS ? 0 : statisticsPOS.size());
+        return statisticsResultVO;
+    }
+
+    @Override
+    public StatisticsAnalysisResultVO getStatisticsAnalysisResult(String token, String projectId) {
+        checkIsCurrentProject(token, projectId);
+
+        List<StatisticsPO> statisticsPOS = statisticsMapper.listGroupByIp(projectId);
+        List<StatisticsPO> statisticsTodayPOS = statisticsMapper.todayListGroupByIp(projectId);
+        List<StatisticsPO> statisticsYesterdayPOS = statisticsMapper.yesterdayListGroupByIp(projectId);
+        List<StatisticsRegionCountVO> statisticsIpRegionCountVOS = statisticsMapper.ipRegionCountList(projectId);
+        int statisticsListCount = statisticsMapper.listCount(projectId);
+        int todayListCount = statisticsMapper.todayListCount(projectId);
+        int yesterdayListCount = statisticsMapper.yesterdayListCount(projectId);
+        int days7ListCount = statisticsMapper.days7ListCount(projectId);
+        int days30ListCount = statisticsMapper.days30ListCount(projectId);
+        List<StatisticsDateCountVO> statisticsDateDays10CountVOS = statisticsMapper.days10CountList(projectId);
+        List<StatisticsDateCountVO> statisticsDateMonths12CountVOS = statisticsMapper.months12CountList(projectId);
+
+        StatisticsAnalysisResultVO statisticsResultVO = new StatisticsAnalysisResultVO();
+        statisticsResultVO.setViewCount(statisticsListCount);
+        statisticsResultVO.setVisitorCount(null == statisticsPOS ? 0 : statisticsPOS.size());
+        statisticsResultVO.setTodayVisitorCount(null == statisticsTodayPOS ? 0 : statisticsTodayPOS.size());
+        statisticsResultVO.setYesterdayVisitorCount(null == statisticsYesterdayPOS ? 0 : statisticsYesterdayPOS.size());
+        statisticsResultVO.setTodayViewCount(todayListCount);
+        statisticsResultVO.setYesterdayViewCount(yesterdayListCount);
+        statisticsResultVO.setDays7ViewCount(days7ListCount);
+        statisticsResultVO.setDays30ViewCount(days30ListCount);
+        statisticsResultVO.setDays10CountList(statisticsDateDays10CountVOS);
+        statisticsResultVO.setMonths12CountList(statisticsDateMonths12CountVOS);
+        statisticsResultVO.setIpRegionCountList(statisticsIpRegionCountVOS);
         return statisticsResultVO;
     }
 }

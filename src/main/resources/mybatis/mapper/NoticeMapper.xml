@@ -4,34 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.NoticeMapper">
     <select id="list" resultType="NoticePO" parameterType="string">
-        select `id`, `title`, `content`, `project_id`, `createtime`, `updatetime`, `expiretime`, `expiretime` is null or `expiretime` > now() as `status`
-        from `t_notice`
-        where `project_id` = #{projectId}
-        order by `status` desc, `createtime` desc
+        SELECT `id`, `title`, `content`, `project_id`, `createtime`, `updatetime`, `expiretime`, `expiretime` IS NULL OR `expiretime` > now() AS `status`
+        FROM `t_notice`
+        WHERE `project_id` = #{projectId}
+        ORDER BY `status` DESC, `createtime` DESC
     </select>
 
     <select id="listByExipretime" resultType="NoticePO" parameterType="string">
-        select * from `t_notice` where `project_id` = #{projectId}
+        SELECT * FROM `t_notice` WHERE `project_id` = #{projectId}
         <![CDATA[
-              and (
-              `expiretime` is null
-              or
+              AND (
+              `expiretime` IS NULL
+              OR
               `expiretime` >= now()
               )
         ]]>
-        order by `createtime` desc
+        ORDER BY `createtime` DESC
     </select>
 
     <select id="listById" resultType="NoticePO" parameterType="string">
-        select * from `t_notice` where `id` = #{id}
+        SELECT * FROM `t_notice` WHERE `id` = #{id}
     </select>
 
     <insert id="insertOne" parameterType="NoticePO">
-        insert into `t_notice`(`id`, `title`, `content`, `project_id`, `expiretime`) VALUES (#{id},#{title},#{content},#{projectId},#{expiretime})
+        INSERT INTO `t_notice`(`id`, `title`, `content`, `project_id`, `expiretime`) VALUES (#{id},#{title},#{content},#{projectId},#{expiretime})
     </insert>
 
     <update id="updateOne">
-        update `t_notice`
+        UPDATE `t_notice`
         <set>
             <if test="po.title != null and po.title != ''">
                 `title` = #{po.title},
@@ -43,11 +43,11 @@
                 `expiretime` = #{po.expiretime},
             </if>
         </set>
-        where `id` = #{id}
+        WHERE `id` = #{id}
     </update>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_notice` where id = #{id}
+        delete FROM `t_notice` WHERE id = #{id}
     </delete>
 </mapper>
 

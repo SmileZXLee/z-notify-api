@@ -17,38 +17,38 @@
     </resultMap>
 
     <select id="list" resultMap="listResultMap" parameterType="Map">
-        select * from `t_feedback` where project_id = #{projectId}
+        SELECT * FROM `t_feedback` WHERE project_id = #{projectId}
         <if test="keyword!='' and keyword!=null">
             <bind name="pattern" value="'%' + keyword + '%'"/>
-            and `username` like #{pattern}
+            AND `username` LIKE #{pattern}
         </if>
-        order by updatetime, createtime desc
+        ORDER BY updatetime, createtime DESC
     </select>
 
     <select id="listById" resultType="FeedbackPO" parameterType="string">
-        select * from `t_feedback` where id = #{id}
+        SELECT * FROM `t_feedback` WHERE id = #{id}
     </select>
 
     <select id="listByUsername" resultMap="listResultMap" parameterType="string">
-        select * from `t_feedback` where `project_id` = #{projectId} and `username` = #{username} order by createtime desc
+        SELECT * FROM `t_feedback` WHERE `project_id` = #{projectId} AND `username` = #{username} ORDER BY createtime DESC
     </select>
 
     <insert id="insertOne" parameterType="FeedbackPO">
-        insert into `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.resolver.ImgsTypeHandler},#{projectId})
+        INSERT INTO `t_feedback`(`id`,`username`,`contact`,`content`,`extra_info`,`img_urls`,`project_id`) VALUES (#{id},#{username},#{contact},#{content},#{extraInfo},#{imgUrls, typeHandler=cn.zxlee.znotifyapi.resolver.ImgsTypeHandler},#{projectId})
     </insert>
 
     <update id="updateReply">
-        update `t_feedback`
+        UPDATE `t_feedback`
         <set>
             <if test="bo.reply != null and bo.reply != ''">
                 `reply` = #{bo.reply},
             </if>
         </set>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_feedback` where id = #{id}
+        DELETE FROM `t_feedback` WHERE id = #{id}
     </delete>
 </mapper>
 

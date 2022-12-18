@@ -1,6 +1,7 @@
 package cn.zxlee.znotifyapi.controller;
 
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsPageBO;
+import cn.zxlee.znotifyapi.pojo.vo.StatisticsAnalysisResultVO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
 import cn.zxlee.znotifyapi.pojo.vo.base.PageResultVO;
 import cn.zxlee.znotifyapi.response.Result;
@@ -40,5 +41,11 @@ public class StatisticsController {
             put("keyword", bo.getKeyword());
         }};
         return Result.success(statisticsService.listByPage(params, bo));
+    }
+
+    @GetMapping("/analysis/{project_id}")
+    @ApiOperation("获取项目下的访问数据分析")
+    public Result<StatisticsAnalysisResultVO> getStatisticsAnalysis(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId){
+        return Result.success(statisticsService.getStatisticsAnalysisResult(token, projectId));
     }
 }

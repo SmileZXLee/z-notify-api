@@ -4,28 +4,75 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.StatisticsMapper">
     <select id="list" resultType="StatisticsPO" parameterType="Map">
-        select * from `t_statistics` where `project_id` = #{projectId}
-        order by `createtime` desc
+        SELECT * FROM `t_statistics` WHERE `project_id` = #{projectId} ORDER BY `createtime` DESC
     </select>
 
     <select id="listGroupByIp" resultType="StatisticsPO" parameterType="string">
-        select * from `t_statistics` where `project_id` = #{projectId} GROUP BY `ip` order by `createtime` desc
+        SELECT * FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip` order by `createtime` desc
+    </select>
+
+    <select id="todayListGroupByIp" resultType="StatisticsPO" parameterType="string">
+        SELECT * FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW( )) GROUP BY `ip` order by `createtime` desc
+    </select>
+
+    <select id="yesterdayListGroupByIp" resultType="StatisticsPO" parameterType="string">
+        SELECT * FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip` order by `createtime` desc
+    </select>
+
+    <select id="ipRegionCountList" resultType="StatisticsRegionCountVO" parameterType="string">
+        SELECT COUNT(0) as count, `ip_region` as `region` FROM `t_statistics` WHERE `project_id` = #{projectId}  GROUP BY `ip_region`
+    </select>
+
+    <select id="days10CountList" resultType="StatisticsDateCountVO" parameterType="string">
+        SELECT STR_TO_DATE(createtime,'%Y-%m-%d') AS `date`,
+        COUNT(`createtime`) AS `count`
+        FROM `t_statistics`
+        WHERE `project_id` = #{projectId}
+        AND DATE_SUB(CURDATE(), INTERVAL 10 DAY) &lt;= date(`createtime`)
+        GROUP BY `date`
+        ORDER BY `date` desc
+    </select>
+
+    <select id="months12CountList" resultType="StatisticsDateCountVO" parameterType="string">
+        SELECT SUBSTRING(STR_TO_DATE(createtime,'%Y-%m') ,1 ,7) AS `date`,
+        COUNT(`createtime`) AS `count`
+        FROM `t_statistics`
+        WHERE `project_id` = #{projectId}
+        AND DATE_SUB(CURDATE(), INTERVAL 12 MONTH) &lt;= date(`createtime`)
+        GROUP BY `date`
+        ORDER BY `date` desc
     </select>
 
     <select id="listCount" resultType="int" parameterType="string">
-        select COUNT(0) from `t_statistics` where `project_id` = #{projectId}
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId}
+    </select>
+
+    <select id="todayListCount" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW( ))
+    </select>
+
+    <select id="yesterdayListCount" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1
+    </select>
+
+    <select id="days7ListCount" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+
+    <select id="days30ListCount" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
     </select>
 
     <select id="listById" resultType="StatisticsPO" parameterType="string">
-        select * from `t_statistics` where `id` = #{id}
+        SELECT * FROM `t_statistics` WHERE `id` = #{id}
     </select>
 
     <insert id="insertOne" parameterType="StatisticsPO">
-        insert into `t_statistics`(`id`,`ip`,`ip_region`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{projectId})
+        INSERT INTO `t_statistics`(`id`,`ip`,`ip_region`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{projectId})
     </insert>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_statistics` where `id` = #{id}
+        DELETE FROM `t_statistics` WHERE `id` = #{id}
     </delete>
 </mapper>
 

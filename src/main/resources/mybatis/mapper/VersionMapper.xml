@@ -4,36 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.VersionMapper">
     <select id="list" resultType="VersionPO" parameterType="Map">
-        select * from `t_version` where project_id = #{projectId}
+        SELECT * FROM `t_version` WHERE project_id = #{projectId}
         <if test="keyword!='' and keyword!=null">
             <bind name="pattern" value="'%' + keyword + '%'"/>
-            and `version` like #{pattern}
+            AND `version` LIKE #{pattern}
         </if>
-        order by version desc
+        ORDER BY `version` DESC
     </select>
 
     <select id="listByVersion" resultType="VersionPO" parameterType="string">
-        select * from `t_version` where project_id = #{projectId} and `version` = #{version} order by `version` desc
+        SELECT * FROM `t_version` WHERE project_id = #{projectId} AND `version` = #{version} ORDER BY `version` DESC
     </select>
 
     <select id="listByHigherVersion" resultType="VersionPO" parameterType="string">
-        select * from `t_version` where project_id = #{projectId}
+        SELECT * FROM `t_version` WHERE project_id = #{projectId}
         <![CDATA[
-              and `version` > #{version}
+              AND `version` > #{version}
         ]]>
-        order by `version` desc
+        ORDER BY `version` DESC
     </select>
 
     <select id="listById" resultType="VersionPO" parameterType="string">
-        select * from `t_version` where id = #{id}
+        SELECT * FROM `t_version` WHERE id = #{id}
     </select>
 
     <insert id="insertOne" parameterType="VersionPO">
-        insert into `t_version`(`id`,`version`,`content`,`download_url`,`project_id`) VALUES (#{id},#{version},#{content},#{downloadUrl},#{projectId})
+        INSERT INTO `t_version`(`id`,`version`,`content`,`download_url`,`project_id`) VALUES (#{id},#{version},#{content},#{downloadUrl},#{projectId})
     </insert>
 
     <update id="updateOne">
-        update `t_version`
+        UPDATE `t_version`
         <set>
             <if test="po.version != null and po.version != ''">
                 `version` = #{po.version},
@@ -45,11 +45,11 @@
                 `download_url` = #{po.downloadUrl},
             </if>
         </set>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteById" parameterType="string">
-        delete from `t_version` where id = #{id}
+        DELETE FROM `t_version` WHERE id = #{id}
     </delete>
 </mapper>
 
