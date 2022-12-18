@@ -25,7 +25,7 @@
 
 - [x] 反馈管理
 
-- [ ] 用户流量统计
+- [ ] 用户流量统计ing
 
 ## 使用到的技术
 * spring-boot+druid+mybatis实现接口处理和数据库访问，数据库使用MySQL
