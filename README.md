@@ -26,7 +26,6 @@
 - [x] 反馈管理
 
 - [ ] 用户流量统计ing，对接页面访问次数示例：[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge?color=0480f3&title=访问次数&style=flat)](https://api.z-notify.zxlee.cn/swagger-ui/index.html#/公共接口/visitAndGetStatisticsOnBadgeUsingGET)
-![visitors](https://visitor-badge.glitch.me/badge?page_id=smilezxlee.smilezxlee.readme)
 
 ## 使用到的技术
 * spring-boot+druid+mybatis实现接口处理和数据库访问，数据库使用MySQL
