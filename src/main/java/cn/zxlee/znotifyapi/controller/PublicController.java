@@ -27,6 +27,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -119,10 +120,13 @@ public class PublicController {
         return Result.success(statisticsService.publicGetStatisticsResult(projectId));
     }
 
-    @GetMapping("/statistics/{project_id}/badge")
-    @ApiOperation("访问一次项目并获取项目统计信息以badge形式展示")
+    @GetMapping(value = "/statistics/{project_id}/badge", produces="image/svg+xml;charset=utf-8")
+    @ApiOperation("访问一次项目并获取项目统计信息以badge形式展示(依赖于shields.io)")
     @NoLoginAuth
-    public String visitAndGetStatisticsOnBadge(HttpServletRequest request, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated StatisticsBadgeBO bo) {
+    public String visitAndGetStatisticsOnBadge(HttpServletRequest request, HttpServletResponse response, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated StatisticsBadgeBO bo) {
+        response.setHeader("Cache-Control", "no-cache,max-age=0,no-store,s-maxage=0,proxy-revalidate");
+        response.setHeader("Expires", "0");
+
         String ip = IpUtils.getIpAddr(request);
         statisticsService.publicSaveOne(ip, projectId);
 
