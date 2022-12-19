@@ -25,7 +25,9 @@
 
 - [x] 反馈管理，提供提交反馈页
 
-- [ ] 用户流量统计ing
+- [x] 用户流量统计&分析
+
+[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge)](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge)
 
 ## 使用到的技术
 * spring-boot+druid+mybatis实现接口处理和数据库访问，数据库使用MySQL
