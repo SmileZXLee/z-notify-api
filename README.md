@@ -17,15 +17,16 @@
 
 
 ## 主要功能
-- [x] 版本管理
+- [x] 版本管理，通过公共接口返回所有新版本号、更新内容、下载地址
 
-- [x] 通知管理
+- [x] 通知管理，支持发布通知和设置过期时间，通过公共接口获取所有未过期的通知
 
-- [x] 通用文本管理
+- [x] 通用文本管理，可以随意自定义key并通过公共接口获取key对应的文本
 
-- [x] 反馈管理，提供提交反馈页
+- [x] 反馈管理，提供用户反馈提交页，用户提交后可在管理后台查看并回复，用户可在反馈页查看开发者回复的内容
 
-- [ ] 用户流量统计ing
+- [x] 用户流量统计&分析，示例：[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge?color=1890ff&style=flat&title=页面访问统计示例)](https://api.z-notify.zxlee.cn/swagger-ui/index.html#/公共接口/visitAndGetStatisticsOnBadgeUsingGET)，流量分析可在管理后台查看
+
 
 ## 使用到的技术
 * spring-boot+druid+mybatis实现接口处理和数据库访问，数据库使用MySQL
