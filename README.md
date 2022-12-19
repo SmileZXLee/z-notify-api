@@ -25,7 +25,7 @@
 
 - [x] 反馈管理，提供提交反馈页
 
-- [x] 用户流量统计&分析，示例：[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge?color=1890ff&style=flat&title=页面访问统计示例)](https://api.z-notify.zxlee.cn/swagger-ui/index.html#/公共接口/visitAndGetStatisticsOnBadgeUsingGET)
+- [x] 用户流量统计&分析，示例：[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge?color=1890ff&style=flat&title=页面访问统计示例)](https://api.z-notify.zxlee.cn/swagger-ui/index.html#/公共接口/visitAndGetStatisticsOnBadgeUsingGET)，流量分析可在管理后台查看
 
 
 ## 使用到的技术
