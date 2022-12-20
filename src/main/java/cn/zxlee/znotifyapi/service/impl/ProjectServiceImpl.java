@@ -70,6 +70,11 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     @Override
+    public List listForSelect(String token) {
+        return projectMapper.listForSelect(tokenUtils.getUserIdByToken(token));
+    }
+
+    @Override
     public int deleteById(Map map, String id) {
         ProjectPO projectPO = projectMapper.listByUserIdAndId(tokenUtils.getUserIdByToken(map.get("token").toString()), id);
         if (null == projectPO) {

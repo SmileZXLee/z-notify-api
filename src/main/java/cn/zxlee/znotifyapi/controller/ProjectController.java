@@ -43,6 +43,12 @@ public class ProjectController {
         return Result.success(projectService.listByPage(params, bo));
     }
 
+    @GetMapping("/projects/select")
+    @ApiOperation("获取下拉框中使用的项目列表")
+    public Result<List<ProjectVO>> getProjectsForSelect(@RequestHeader String token){
+        return Result.success(projectService.listForSelect(token));
+    }
+
     @PostMapping("/project")
     @ApiOperation("添加一条项目")
     public Result saveProject(@RequestHeader String token, @Validated @RequestBody ProjectBO bo){

@@ -42,7 +42,7 @@ public class SwaggerConfig {
                 .description("")
                 .termsOfServiceUrl("https://github.com/SmileZXLee/z-notify-api")
                 .contact(new Contact("zxlee","https://github.com/SmileZXLee","admin@zxlee.cn"))
-                .version("0.0.1")
+                .version("0.0.2")
                 .build();
     }
 

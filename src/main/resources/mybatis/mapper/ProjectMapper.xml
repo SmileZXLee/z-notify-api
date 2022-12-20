@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zxlee.znotifyapi.mapper.ProjectMapper">
+    <select id="listForSelect" resultType="SelectVO">
+        SELECT `id` AS `value`, `project_name` AS `label` FROM `t_project` WHERE `user_id` = #{userId} ORDER BY `createtime` DESC
+    </select>
+
     <select id="list" resultType="ProjectPO">
         SELECT `id`, `project_name`, `createtime`, `updatetime`, `user_id`,
         (SELECT COUNT(0) FROM `t_notice` WHERE `t_notice`.`project_id` = `t_project`.`id`) AS `notice_count`,

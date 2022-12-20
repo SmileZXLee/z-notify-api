@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.zxlee</groupId>
     <artifactId>z-notify-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>z-notify-api</name>
     <packaging>jar</packaging>
     <description>z-notify api</description>

@@ -1,7 +1,6 @@
 package cn.zxlee.znotifyapi.interceptor;
 
 import cn.zxlee.znotifyapi.annotation.NoLoginAuth;
-import cn.zxlee.znotifyapi.exception.LoginAuthErrorException;
 import cn.zxlee.znotifyapi.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,6 @@ public class UserHandlerInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod) || ((HandlerMethod) handler).getMethodAnnotation(NoLoginAuth.class) != null) {
             return true;
         }
-
-        log.info("UserHandlerInterceptor拦截器开始执行" + request.getRequestURI());
         // 获取请求头中的token
         String token = request.getHeader("token");
         if (StringUtils.hasText(tokenUtils.verifyToken(token))) {
