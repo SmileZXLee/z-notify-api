@@ -11,11 +11,11 @@ import java.util.List;
 @Repository
 public interface StatisticsMapper extends BaseMapper<StatisticsPO> {
 
-    List<StatisticsPO> listGroupByIp(String projectId);
+    int countGroupByIp(String projectId);
 
-    List<StatisticsPO> todayListGroupByIp(String projectId);
+    int todayCountGroupByIp(String projectId);
 
-    List<StatisticsPO> yesterdayListGroupByIp(String projectId);
+    int yesterdayCountGroupByIp(String projectId);
 
     List<StatisticsRegionCountVO> ipRegionCountList(String projectId);
 

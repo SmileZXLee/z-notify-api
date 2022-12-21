@@ -69,11 +69,11 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
 
     @Override
     public StatisticsResultVO publicGetStatisticsResult(String projectId) {
-        List<StatisticsPO> statisticsPOS = statisticsMapper.listGroupByIp(projectId);
+        int countGroupByIp = statisticsMapper.countGroupByIp(projectId);
         int statisticsListCount = statisticsMapper.listCount(projectId);
         StatisticsResultVO statisticsResultVO = new StatisticsResultVO();
         statisticsResultVO.setViewCount(statisticsListCount);
-        statisticsResultVO.setVisitorCount(null == statisticsPOS ? 0 : statisticsPOS.size());
+        statisticsResultVO.setVisitorCount(countGroupByIp);
         return statisticsResultVO;
     }
 
@@ -81,9 +81,9 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
     public StatisticsAnalysisResultVO getStatisticsAnalysisResult(String token, String projectId) {
         checkIsCurrentProject(token, projectId);
 
-        List<StatisticsPO> statisticsPOS = statisticsMapper.listGroupByIp(projectId);
-        List<StatisticsPO> statisticsTodayPOS = statisticsMapper.todayListGroupByIp(projectId);
-        List<StatisticsPO> statisticsYesterdayPOS = statisticsMapper.yesterdayListGroupByIp(projectId);
+        int countGroupByIp = statisticsMapper.countGroupByIp(projectId);
+        int todayCountGroupByIp = statisticsMapper.todayCountGroupByIp(projectId);
+        int yesterdayCountGroupByIp = statisticsMapper.yesterdayCountGroupByIp(projectId);
         List<StatisticsRegionCountVO> statisticsIpRegionCountVOS = statisticsMapper.ipRegionCountList(projectId);
         int statisticsListCount = statisticsMapper.listCount(projectId);
         int todayListCount = statisticsMapper.todayListCount(projectId);
@@ -95,9 +95,9 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
 
         StatisticsAnalysisResultVO statisticsResultVO = new StatisticsAnalysisResultVO();
         statisticsResultVO.setViewCount(statisticsListCount);
-        statisticsResultVO.setVisitorCount(null == statisticsPOS ? 0 : statisticsPOS.size());
-        statisticsResultVO.setTodayVisitorCount(null == statisticsTodayPOS ? 0 : statisticsTodayPOS.size());
-        statisticsResultVO.setYesterdayVisitorCount(null == statisticsYesterdayPOS ? 0 : statisticsYesterdayPOS.size());
+        statisticsResultVO.setVisitorCount(countGroupByIp);
+        statisticsResultVO.setTodayVisitorCount(todayCountGroupByIp);
+        statisticsResultVO.setYesterdayVisitorCount(yesterdayCountGroupByIp);
         statisticsResultVO.setTodayViewCount(todayListCount);
         statisticsResultVO.setYesterdayViewCount(yesterdayListCount);
         statisticsResultVO.setDays7ViewCount(days7ListCount);
