@@ -8,23 +8,32 @@
     </select>
 
     <select id="countGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(*) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="todayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(*) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="yesterdayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(*) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="ipRegionCountList" resultType="StatisticsRegionCountVO" parameterType="string">
         SELECT COUNT(0) as count, `ip_region` as `region` FROM `t_statistics` WHERE `project_id` = #{projectId}  GROUP BY `ip_region`
     </select>
 
+    <select id="hour24CountList" resultType="StatisticsTimeCountVO" parameterType="string">
+        SELECT DATE_FORMAT(createtime, '%H') AS `hour`,
+        COUNT(`createtime`) AS `count`
+        FROM `t_statistics`
+        WHERE `project_id` = 8292724618483712000
+        AND DATE_FORMAT(createtime,'%Y-%m-%d') = DATE_FORMAT(CURDATE(),'%Y-%m-%d')
+        GROUP BY `hour`
+    </select>
+
     <select id="days10CountList" resultType="StatisticsDateCountVO" parameterType="string">
-        SELECT STR_TO_DATE(createtime,'%Y-%m-%d') AS `date`,
+        SELECT DATE_FORMAT(createtime,'%Y-%m-%d') AS `date`,
         COUNT(`createtime`) AS `count`
         FROM `t_statistics`
         WHERE `project_id` = #{projectId}
@@ -34,7 +43,7 @@
     </select>
 
     <select id="months12CountList" resultType="StatisticsDateCountVO" parameterType="string">
-        SELECT SUBSTRING(STR_TO_DATE(createtime,'%Y-%m') ,1 ,7) AS `date`,
+        SELECT DATE_FORMAT(createtime,'%Y-%m') AS `date`,
         COUNT(`createtime`) AS `count`
         FROM `t_statistics`
         WHERE `project_id` = #{projectId}

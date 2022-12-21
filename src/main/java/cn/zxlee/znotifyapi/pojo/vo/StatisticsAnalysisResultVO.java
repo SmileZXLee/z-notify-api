@@ -33,6 +33,9 @@ public class StatisticsAnalysisResultVO {
     @ApiModelProperty("近30天总访问次数")
     private Integer days30ViewCount;
 
+    @ApiModelProperty("今日每小时访问次数")
+    private List<StatisticsTimeCountVO> hour24CountList;
+
     @ApiModelProperty("近10天每天的访问次数")
     private List<StatisticsDateCountVO> days10CountList;
     @ApiModelProperty("近12个月每月的访问次数")

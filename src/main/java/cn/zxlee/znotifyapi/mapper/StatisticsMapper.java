@@ -4,6 +4,7 @@ import cn.zxlee.znotifyapi.mapper.base.BaseMapper;
 import cn.zxlee.znotifyapi.pojo.vo.StatisticsDateCountVO;
 import cn.zxlee.znotifyapi.pojo.po.StatisticsPO;
 import cn.zxlee.znotifyapi.pojo.vo.StatisticsRegionCountVO;
+import cn.zxlee.znotifyapi.pojo.vo.StatisticsTimeCountVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public interface StatisticsMapper extends BaseMapper<StatisticsPO> {
     int days7ListCount(String projectId);
 
     int days30ListCount(String projectId);
+
+    List<StatisticsTimeCountVO> hour24CountList(String projectId);
 
     List<StatisticsDateCountVO> days10CountList(String projectId);
 
