@@ -3,7 +3,6 @@ package cn.zxlee.znotifyapi.controller;
 import cn.zxlee.znotifyapi.annotation.NoLoginAuth;
 import cn.zxlee.znotifyapi.enums.StatisticsBadgeType;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
-import cn.zxlee.znotifyapi.pojo.bo.StatisticsBO;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsBadgeBO;
 import cn.zxlee.znotifyapi.pojo.vo.*;
 import cn.zxlee.znotifyapi.response.Result;
@@ -14,17 +13,9 @@ import cn.zxlee.znotifyapi.utils.thirdPartyApi.IThirdPartyApiService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -109,6 +100,17 @@ public class PublicController {
     @NoLoginAuth
     public Result<List<String>> uploadFiles(@RequestPart(value = "files", required = true) MultipartFile[] files) {
         return Result.success(ossService.uploadFiles(files));
+    }
+
+    @GetMapping("/statistics/{project_id}/addOnly")
+    @ApiOperation("访问一次项目(不返回任何信息，可以放在img标签中并设置display:none来达到无感记录的效果)")
+    @NoLoginAuth
+    public String visitGetStatistics(HttpServletRequest request, HttpServletResponse response, @NotEmpty @PathVariable(value = "project_id") String projectId){
+        response.setHeader("Cache-Control", "no-cache,max-age=0,no-store,s-maxage=0,proxy-revalidate");
+        response.setHeader("Expires", "0");
+        String ip = IpUtils.getIpAddr(request);
+        statisticsService.publicSaveOne(ip, projectId);
+        return null;
     }
 
     @GetMapping("/statistics/{project_id}")

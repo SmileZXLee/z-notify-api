@@ -24,6 +24,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 注册拦截器 拦截路径为 /** 放行 /user/to_login /user/login路径
         registry.addInterceptor(userHandlerInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/*/user/login","/swagger-ui/**","/swagger-resources/**","/v3/api-docs");
+                .excludePathPatterns("/*/user/login","/swagger-ui/**","/swagger-resources/**","/v3/api-docs","/druid/**");
     }
 }
