@@ -89,6 +89,7 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
         int todayListCount = statisticsMapper.todayListCount(projectId);
         int yesterdayListCount = statisticsMapper.yesterdayListCount(projectId);
         int days7ListCount = statisticsMapper.days7ListCount(projectId);
+        int lastDays7ListCount = statisticsMapper.lastDays7ListCount(projectId);
         int days30ListCount = statisticsMapper.days30ListCount(projectId);
         List<StatisticsTimeCountVO> statisticsTimeHour24CountVOS = statisticsMapper.hour24CountList(projectId);
         List<StatisticsDateCountVO> statisticsDateDays10CountVOS = statisticsMapper.days10CountList(projectId);
@@ -102,6 +103,7 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
         statisticsResultVO.setTodayViewCount(todayListCount);
         statisticsResultVO.setYesterdayViewCount(yesterdayListCount);
         statisticsResultVO.setDays7ViewCount(days7ListCount);
+        statisticsResultVO.setLastDays7ViewCount(lastDays7ListCount);
         statisticsResultVO.setDays30ViewCount(days30ListCount);
         statisticsResultVO.setHour24CountList(statisticsTimeHour24CountVOS);
         statisticsResultVO.setDays10CountList(statisticsDateDays10CountVOS);

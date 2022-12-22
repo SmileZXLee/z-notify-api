@@ -30,6 +30,8 @@ public class StatisticsAnalysisResultVO {
     private Integer yesterdayVisitorCount;
     @ApiModelProperty("近7天总访问次数")
     private Integer days7ViewCount;
+    @ApiModelProperty("上一个7天总访问次数")
+    private Integer lastDays7ViewCount;
     @ApiModelProperty("近30天总访问次数")
     private Integer days30ViewCount;
 

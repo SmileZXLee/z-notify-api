@@ -28,6 +28,8 @@ public interface StatisticsMapper extends BaseMapper<StatisticsPO> {
 
     int days7ListCount(String projectId);
 
+    int lastDays7ListCount(String projectId);
+
     int days30ListCount(String projectId);
 
     List<StatisticsTimeCountVO> hour24CountList(String projectId);

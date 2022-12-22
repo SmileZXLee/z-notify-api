@@ -8,15 +8,15 @@
     </select>
 
     <select id="countGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="todayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="yesterdayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT `id` FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip`) AS `t_count`
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip`) AS `t_count`
     </select>
 
     <select id="ipRegionCountList" resultType="StatisticsRegionCountVO" parameterType="string">
@@ -62,6 +62,10 @@
 
     <select id="yesterdayListCount" resultType="int" parameterType="string">
         SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1
+    </select>
+
+    <select id="lastDays7ListCount" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM `t_statistics` WHERE `project_id` = #{projectId} AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt;= date(createtime) AND DATE_SUB(CURDATE(), INTERVAL 14 DAY) &lt;= date(createtime)
     </select>
 
     <select id="days7ListCount" resultType="int" parameterType="string">
