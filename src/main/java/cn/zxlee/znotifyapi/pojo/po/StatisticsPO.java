@@ -15,4 +15,5 @@ public class StatisticsPO extends BasePOJO {
     private String projectId;
     private String ip;
     private String ipRegion;
+    private String tag;
 }

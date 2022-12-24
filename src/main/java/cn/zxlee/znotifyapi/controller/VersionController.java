@@ -34,7 +34,7 @@ public class VersionController {
 
     @GetMapping("/versions/{project_id}")
     @ApiOperation("获取项目下的版本列表")
-    public Result<PageResultVO<VersionVO>> getVersions(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated VersionPageBO bo){
+    public Result<PageResultVO<VersionVO>> getVersions(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId, @Validated VersionPageBO bo){
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
@@ -52,7 +52,7 @@ public class VersionController {
 
     @PutMapping("/version/{id}")
     @ApiOperation("更新一个版本")
-    public Result updateVersion(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String id, @Validated @RequestBody VersionBO bo){
+    public Result updateVersion(@RequestHeader String token, @NotEmpty @PathVariable("id") String id, @Validated @RequestBody VersionBO bo){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};
@@ -62,7 +62,7 @@ public class VersionController {
 
     @DeleteMapping("/version/{id}")
     @ApiOperation("删除一个版本")
-    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String textId) {
+    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable("id") String textId) {
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
         }};

@@ -58,32 +58,31 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
     }
 
     @Override
-    public int publicSaveOne(String ip, String projectId) {
-        checkHasProject(projectId);
-        StatisticsBO bo = new StatisticsBO();
-        bo.setIp(ip);
-        bo.setIpRegion(ip2regionSearcher.getAddress(ip));
-        bo.setProjectId(projectId);
+    public int publicSaveOne(StatisticsBO bo) {
+        checkHasProject(bo.getProjectId());
+        bo.setIpRegion(ip2regionSearcher.getAddress(bo.getIp()));
         return saveOne("", bo);
     }
 
     @Override
-    public StatisticsResultVO publicGetStatisticsResult(String projectId) {
-        int countGroupByIp = statisticsMapper.countGroupByIp(projectId);
+    public StatisticsResultVO publicGetStatisticsResult(String projectId, String visitorBy) {
+        visitorBy = null == visitorBy ? "ip" : visitorBy;
+        int visitorCount = statisticsMapper.countGroupBy(projectId, visitorBy);
         int statisticsListCount = statisticsMapper.listCount(projectId);
         StatisticsResultVO statisticsResultVO = new StatisticsResultVO();
         statisticsResultVO.setViewCount(statisticsListCount);
-        statisticsResultVO.setVisitorCount(countGroupByIp);
+        statisticsResultVO.setVisitorCount(visitorCount);
         return statisticsResultVO;
     }
 
     @Override
-    public StatisticsAnalysisResultVO getStatisticsAnalysisResult(String token, String projectId) {
+    public StatisticsAnalysisResultVO getStatisticsAnalysisResult(String token, String projectId, String visitorBy) {
+        visitorBy = null == visitorBy ? "ip" : visitorBy;
         checkIsCurrentProject(token, projectId);
 
-        int countGroupByIp = statisticsMapper.countGroupByIp(projectId);
-        int todayCountGroupByIp = statisticsMapper.todayCountGroupByIp(projectId);
-        int yesterdayCountGroupByIp = statisticsMapper.yesterdayCountGroupByIp(projectId);
+        int visitorCount = statisticsMapper.countGroupBy(projectId, visitorBy);
+        int todayVisitorCount = statisticsMapper.todayCountGroupBy(projectId, visitorBy);
+        int yesterdayVisitorCount = statisticsMapper.yesterdayCountGroupBy(projectId, visitorBy);
         List<StatisticsRegionCountVO> statisticsIpRegionCountVOS = statisticsMapper.ipRegionCountList(projectId);
         int statisticsListCount = statisticsMapper.listCount(projectId);
         int todayListCount = statisticsMapper.todayListCount(projectId);
@@ -97,9 +96,9 @@ public class StatisticsServiceImpl extends BaseInProjectServiceImpl implements I
 
         StatisticsAnalysisResultVO statisticsResultVO = new StatisticsAnalysisResultVO();
         statisticsResultVO.setViewCount(statisticsListCount);
-        statisticsResultVO.setVisitorCount(countGroupByIp);
-        statisticsResultVO.setTodayVisitorCount(todayCountGroupByIp);
-        statisticsResultVO.setYesterdayVisitorCount(yesterdayCountGroupByIp);
+        statisticsResultVO.setVisitorCount(visitorCount);
+        statisticsResultVO.setTodayVisitorCount(todayVisitorCount);
+        statisticsResultVO.setYesterdayVisitorCount(yesterdayVisitorCount);
         statisticsResultVO.setTodayViewCount(todayListCount);
         statisticsResultVO.setYesterdayViewCount(yesterdayListCount);
         statisticsResultVO.setDays7ViewCount(days7ListCount);

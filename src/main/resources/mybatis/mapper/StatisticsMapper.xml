@@ -7,16 +7,16 @@
         SELECT * FROM `t_statistics` WHERE `project_id` = #{projectId} ORDER BY `createtime` DESC
     </select>
 
-    <select id="countGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY `ip`) AS `t_count`
+    <select id="countGroupBy" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} GROUP BY ${by}) AS `t_count`
     </select>
 
-    <select id="todayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY `ip`) AS `t_count`
+    <select id="todayCountGroupBy" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(`createtime`) = TO_DAYS(NOW()) GROUP BY ${by}) AS `t_count`
     </select>
 
-    <select id="yesterdayCountGroupByIp" resultType="int" parameterType="string">
-        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY `ip`) AS `t_count`
+    <select id="yesterdayCountGroupBy" resultType="int" parameterType="string">
+        SELECT COUNT(0) FROM (SELECT 1 FROM `t_statistics` WHERE `project_id` = #{projectId} AND TO_DAYS(NOW()) - TO_DAYS(`createtime`) = 1 GROUP BY ${by}) AS `t_count`
     </select>
 
     <select id="ipRegionCountList" resultType="StatisticsRegionCountVO" parameterType="string">
@@ -81,7 +81,7 @@
     </select>
 
     <insert id="insertOne" parameterType="StatisticsPO">
-        INSERT INTO `t_statistics`(`id`,`ip`,`ip_region`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{projectId})
+        INSERT INTO `t_statistics`(`id`, `ip`, `ip_region`, `tag`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{tag},#{projectId})
     </insert>
 
     <delete id="deleteById" parameterType="string">

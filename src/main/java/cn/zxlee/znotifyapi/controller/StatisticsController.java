@@ -1,5 +1,7 @@
 package cn.zxlee.znotifyapi.controller;
 
+import cn.zxlee.znotifyapi.annotation.enumValidator.EnumValidator;
+import cn.zxlee.znotifyapi.enums.StatisticsVisitorBy;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsPageBO;
 import cn.zxlee.znotifyapi.pojo.vo.StatisticsAnalysisResultVO;
 import cn.zxlee.znotifyapi.pojo.vo.VersionVO;
@@ -8,6 +10,7 @@ import cn.zxlee.znotifyapi.response.Result;
 import cn.zxlee.znotifyapi.service.IStatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +37,7 @@ public class StatisticsController {
 
     @GetMapping("/statistics/{project_id}")
     @ApiOperation("获取项目下的访问数据列表")
-    public Result<PageResultVO<VersionVO>> getStatistics(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated StatisticsPageBO bo){
+    public Result<PageResultVO<VersionVO>> getStatistics(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId, @Validated StatisticsPageBO bo) {
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
@@ -45,7 +48,8 @@ public class StatisticsController {
 
     @GetMapping("/analysis/{project_id}")
     @ApiOperation("获取项目下的访问数据分析")
-    public Result<StatisticsAnalysisResultVO> getStatisticsAnalysis(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId){
-        return Result.success(statisticsService.getStatisticsAnalysisResult(token, projectId));
+    public Result<StatisticsAnalysisResultVO> getStatisticsAnalysis(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId,
+                                                                    @ApiParam("visitor_count计算根据什么区分，默认为ip，可选值有ip、tag") @RequestParam(value = "visitor_by", required = false) @EnumValidator(StatisticsVisitorBy.class) String visitorBy) {
+        return Result.success(statisticsService.getStatisticsAnalysisResult(token, projectId, visitorBy));
     }
 }

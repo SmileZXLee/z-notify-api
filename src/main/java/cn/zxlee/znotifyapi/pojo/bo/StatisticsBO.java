@@ -4,6 +4,8 @@ import cn.zxlee.znotifyapi.pojo.BasePOJO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -17,6 +19,9 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @ApiModel("统计BO")
 public class StatisticsBO extends BasePOJO {
+    @Autowired
+    private Ip2regionSearcher ip2regionSearcher;
+
     @ApiModelProperty("项目id")
     @NotEmpty(message = "项目id不能为空")
     private String projectId;
@@ -24,4 +29,6 @@ public class StatisticsBO extends BasePOJO {
     private String ip;
     @ApiModelProperty("访问者的ip归属地")
     private String ipRegion;
+    @ApiModelProperty("用于额外区分不同个体的标签")
+    private String tag;
 }

@@ -34,7 +34,7 @@ public class TextController {
 
     @GetMapping("/texts/{project_id}")
     @ApiOperation("获取项目下的文本列表")
-    public Result<PageResultVO<TextVO>> getTexts(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated TextPageBO bo){
+    public Result<PageResultVO<TextVO>> getTexts(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId, @Validated TextPageBO bo){
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
@@ -52,7 +52,7 @@ public class TextController {
 
     @PutMapping("/text/{id}")
     @ApiOperation("更新一条文本")
-    public Result updateText(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String textId, @Validated @RequestBody TextBO bo){
+    public Result updateText(@RequestHeader String token, @NotEmpty @PathVariable("id") String textId, @Validated @RequestBody TextBO bo){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};
@@ -62,7 +62,7 @@ public class TextController {
 
     @DeleteMapping("/text/{id}")
     @ApiOperation("删除一条文本")
-    public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String textId){
+    public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable("id") String textId){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};

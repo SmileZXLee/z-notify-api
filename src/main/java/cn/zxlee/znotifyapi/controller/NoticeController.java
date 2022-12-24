@@ -35,7 +35,7 @@ public class NoticeController {
 
     @GetMapping("/notices/{project_id}")
     @ApiOperation("获取项目下的通知列表")
-    public Result<PageResultVO<NoticeVO>> getNotices(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated NoticePageBO bo){
+    public Result<PageResultVO<NoticeVO>> getNotices(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId, @Validated NoticePageBO bo){
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
@@ -53,7 +53,7 @@ public class NoticeController {
 
     @PutMapping("/notice/{id}")
     @ApiOperation("更新一条通知")
-    public Result updateNotice(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String noticeId, @Validated @RequestBody NoticeBO bo){
+    public Result updateNotice(@RequestHeader String token, @NotEmpty @PathVariable("id") String noticeId, @Validated @RequestBody NoticeBO bo){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};
@@ -63,7 +63,7 @@ public class NoticeController {
 
     @DeleteMapping("/notice/{id}")
     @ApiOperation("删除一条通知")
-    public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String noticeId){
+    public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable("id") String noticeId){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};

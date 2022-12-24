@@ -1,8 +1,11 @@
 package cn.zxlee.znotifyapi.controller;
 
 import cn.zxlee.znotifyapi.annotation.NoLoginAuth;
+import cn.zxlee.znotifyapi.annotation.enumValidator.EnumValidator;
 import cn.zxlee.znotifyapi.enums.StatisticsBadgeType;
+import cn.zxlee.znotifyapi.enums.StatisticsVisitorBy;
 import cn.zxlee.znotifyapi.pojo.bo.FeedbackBO;
+import cn.zxlee.znotifyapi.pojo.bo.StatisticsBO;
 import cn.zxlee.znotifyapi.pojo.bo.StatisticsBadgeBO;
 import cn.zxlee.znotifyapi.pojo.vo.*;
 import cn.zxlee.znotifyapi.response.Result;
@@ -61,14 +64,14 @@ public class PublicController {
     @GetMapping("/notices/{project_id}")
     @ApiOperation("获取通知列表")
     @NoLoginAuth
-    public Result<List<NoticeVO>> getNotices(@NotEmpty @PathVariable(value = "project_id") String projectId){
+    public Result<List<NoticeVO>> getNotices(@NotEmpty @PathVariable("project_id") String projectId){
         return Result.success(noticeService.publicList(projectId));
     }
 
     @GetMapping("/text/{project_id}/{key}")
     @ApiOperation("根据key获取文本")
     @NoLoginAuth
-    public Result<TextVO> getTextByKey(@NotEmpty @PathVariable(value = "project_id") String projectId, @NotEmpty @PathVariable(value = "key") String key){
+    public Result<TextVO> getTextByKey(@NotEmpty @PathVariable("project_id") String projectId, @NotEmpty @PathVariable("key") String key){
         List<TextVO> textVOS = textService.publicListByKey(projectId, key);
         return Result.success(textVOS.size() > 0 ?  textVOS.get(0) : null);
     }
@@ -76,7 +79,7 @@ public class PublicController {
     @GetMapping("/versions/{project_id}/{version}")
     @ApiOperation("根据版本号获取版本，传当前版本号，会返回高于此版本的所有版本，如果为空则代表没有新版本")
     @NoLoginAuth
-    public Result<List<VersionVO>> getVersions(@NotEmpty @PathVariable(value = "project_id") String projectId, @Pattern(regexp = "^\\d(.\\d)*$", message = "版本号格式不合法") @PathVariable(value = "version") String version){
+    public Result<List<VersionVO>> getVersions(@NotEmpty @PathVariable("project_id") String projectId, @Pattern(regexp = "^\\d(.\\d)*$", message = "版本号格式不合法") @PathVariable("version") String version){
         return Result.success(versionService.publicListByVersion(projectId, version));
     }
 
@@ -91,52 +94,71 @@ public class PublicController {
     @GetMapping("/feedbacks/{project_id}/{username}")
     @ApiOperation("查询某个用户下的反馈列表")
     @NoLoginAuth
-    public Result<List<FeedbackVO>> getFeedbacks(@NotEmpty @PathVariable(value = "project_id") String projectId, @PathVariable(value = "username") String username){
+    public Result<List<FeedbackVO>> getFeedbacks(@NotEmpty @PathVariable("project_id") String projectId, @PathVariable("username") String username){
         return Result.success(feedbackService.publicListByUsername(projectId, username));
     }
 
     @PostMapping(value = "/upload/uploadFiles", headers = "content-type=multipart/form-data")
     @ApiOperation("文件上传，支持多个文件同时上传，每个文件上限为1MB")
     @NoLoginAuth
-    public Result<List<String>> uploadFiles(@RequestPart(value = "files", required = true) MultipartFile[] files) {
+    public Result<List<String>> uploadFiles(@RequestPart("files") MultipartFile[] files) {
         return Result.success(ossService.uploadFiles(files));
     }
 
     @GetMapping("/statistics/{project_id}/addOnly")
     @ApiOperation("访问一次项目(不返回任何信息，可以放在img标签中并设置display:none来达到无感记录的效果)")
     @NoLoginAuth
-    public String visitGetStatistics(HttpServletRequest request, HttpServletResponse response, @NotEmpty @PathVariable(value = "project_id") String projectId){
+    public String visitGetStatistics(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     @NotEmpty @PathVariable("project_id") String projectId,
+                                     @ApiParam("用于额外区分不同个体的标签") @RequestParam(value = "tag", required = false) String tag){
         response.setHeader("Cache-Control", "no-cache,max-age=0,no-store,s-maxage=0,proxy-revalidate");
         response.setHeader("Expires", "0");
         String ip = IpUtils.getIpAddr(request);
-        statisticsService.publicSaveOne(ip, projectId);
+        StatisticsBO bo = new StatisticsBO();
+        bo.setProjectId(projectId);
+        bo.setIp(ip);
+        bo.setTag(tag);
+        statisticsService.publicSaveOne(bo);
         return null;
     }
 
     @GetMapping("/statistics/{project_id}")
     @ApiOperation("访问一次项目并获取项目统计信息")
     @NoLoginAuth
-    public Result<StatisticsResultVO> visitAndGetStatistics(HttpServletRequest request, @NotEmpty @PathVariable(value = "project_id") String projectId){
+    public Result<StatisticsResultVO> visitAndGetStatistics(HttpServletRequest request,
+                                                            @NotEmpty @PathVariable("project_id") String projectId,
+                                                            @ApiParam("用于额外区分不同个体的标签") @RequestParam(value = "tag", required = false) String tag,
+                                                            @ApiParam("visitor_count计算根据什么区分，默认为ip，可选值有ip、tag") @RequestParam(value = "visitor_by", required = false) @EnumValidator(StatisticsVisitorBy.class) String visitorBy) {
         String ip = IpUtils.getIpAddr(request);
-        statisticsService.publicSaveOne(ip, projectId);
-        return Result.success(statisticsService.publicGetStatisticsResult(projectId));
+        StatisticsBO bo = new StatisticsBO();
+
+        bo.setProjectId(projectId);
+        bo.setIp(ip);
+        bo.setTag(tag);
+        statisticsService.publicSaveOne(bo);
+        return Result.success(statisticsService.publicGetStatisticsResult(projectId, visitorBy));
     }
 
     @GetMapping(value = "/statistics/{project_id}/badge", produces="image/svg+xml;charset=utf-8")
     @ApiOperation("访问一次项目并获取项目统计信息以badge形式展示(依赖于shields.io)")
     @NoLoginAuth
-    public String visitAndGetStatisticsOnBadge(HttpServletRequest request, HttpServletResponse response, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated StatisticsBadgeBO bo) {
+    public String visitAndGetStatisticsOnBadge(HttpServletRequest request, HttpServletResponse response, @NotEmpty @PathVariable("project_id") String projectId, @Validated StatisticsBadgeBO badgeBO) {
         response.setHeader("Cache-Control", "no-cache,max-age=0,no-store,s-maxage=0,proxy-revalidate");
         response.setHeader("Expires", "0");
 
         String ip = IpUtils.getIpAddr(request);
-        statisticsService.publicSaveOne(ip, projectId);
+        StatisticsBO bo = new StatisticsBO();
+        bo.setProjectId(projectId);
+        bo.setIp(ip);
+        bo.setTag(badgeBO.getTag());
+        statisticsService.publicSaveOne(bo);
 
-        StatisticsResultVO statisticsResultVO = statisticsService.publicGetStatisticsResult(projectId);
+        StatisticsResultVO statisticsResultVO = statisticsService.publicGetStatisticsResult(projectId, badgeBO.getVisitorBy());
 
-        String badgeType = bo.getType();
-        Integer count = StatisticsBadgeType.VIEW_COUNT.getValue().equals(badgeType)  ? statisticsResultVO.getViewCount() : statisticsResultVO.getVisitorCount();
+        String badgeType = badgeBO.getType();
+        Integer count = StatisticsBadgeType.VIEW_COUNT.getValue().equals(badgeType) ? statisticsResultVO.getViewCount() : statisticsResultVO.getVisitorCount();
 
-        return thirdPartyApiService.getBadge(bo.getTitle(), count.toString(), bo.getColor(), bo.getStyle());
+        return thirdPartyApiService.getBadge(badgeBO.getTitle(), count.toString(), badgeBO.getColor(), badgeBO.getStyle());
     }
 }

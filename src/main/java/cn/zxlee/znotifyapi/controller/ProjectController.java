@@ -58,7 +58,7 @@ public class ProjectController {
 
     @DeleteMapping("/project/{project_id}")
     @ApiOperation("删除一条项目")
-    public Result deleteProject(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId){
+    public Result deleteProject(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId){
         HashMap<String, String> params  = new HashMap<String, String>() {{
             put("token", token);
         }};

@@ -33,7 +33,7 @@ public class FeedbackController {
 
     @GetMapping("/feedbacks/{project_id}")
     @ApiOperation("获取项目下的反馈列表")
-    public Result<PageResultVO<VersionVO>> getFeedbacks(@RequestHeader String token, @NotEmpty @PathVariable(value = "project_id") String projectId, @Validated FeedbackPageBO bo){
+    public Result<PageResultVO<VersionVO>> getFeedbacks(@RequestHeader String token, @NotEmpty @PathVariable("project_id") String projectId, @Validated FeedbackPageBO bo){
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
             put("projectId", projectId);
@@ -44,14 +44,14 @@ public class FeedbackController {
 
     @PutMapping("/reply/{id}")
     @ApiOperation("回复用户反馈")
-    public Result replayFeedback(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String id, @Validated @RequestBody FeedbackReplyBO bo){
+    public Result replayFeedback(@RequestHeader String token, @NotEmpty @PathVariable("id") String id, @Validated @RequestBody FeedbackReplyBO bo){
         int result = feedbackService.updateReply(token, id, bo);
         return result > 0 ? Result.success() : Result.fail("回复失败");
     }
 
     @DeleteMapping("/feedback/{id}")
     @ApiOperation("删除一条反馈")
-    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable(value = "id") String id) {
+    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable("id") String id) {
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
         }};

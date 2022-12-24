@@ -23,4 +23,6 @@ public class StatisticsVO extends BasePOJO {
     private String ip;
     @ApiModelProperty("访问者的ip归属地")
     private String ipRegion;
+    @ApiModelProperty("用于额外区分不同个体的标签")
+    private String tag;
 }
