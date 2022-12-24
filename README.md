@@ -25,7 +25,7 @@
 
 * 反馈管理，提供用户反馈提交页，用户提交后可在管理后台查看并回复，用户可在反馈页查看开发者回复的内容
 
-* 用户流量统计&分析，示例：[![statistics](https://api.z-notify.zxlee.cn/v1/public/statistics/8292724618483712000/badge?color=1890ff&style=flat&title=页面访问统计示例)](https://api.z-notify.zxlee.cn/swagger-ui/index.html#/公共接口/visitAndGetStatisticsOnBadgeUsingGET)，流量分析可在管理后台查看
+* 用户流量统计&分析，流量分析可在管理后台查看
 
 
 ## 使用到的技术
