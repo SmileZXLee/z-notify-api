@@ -22,6 +22,8 @@ import javax.validation.constraints.NotEmpty;
 public class StatisticsBadgeBO {
     @ApiModelProperty("用于额外区分不同个体的标签")
     private String tag;
+    @ApiModelProperty("访问者来源")
+    private String from;
     @ApiModelProperty("获取badge中值的类型，有view_count(访问次数)和visitor_count(访问人数，根据ip区分)两种，默认为view_count")
     @EnumValidator(StatisticsBadgeType.class)
     private String type;

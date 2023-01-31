@@ -1,6 +1,7 @@
 package cn.zxlee.znotifyapi.pojo.po;
 
 import cn.zxlee.znotifyapi.pojo.BasePOJO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -16,4 +17,5 @@ public class StatisticsPO extends BasePOJO {
     private String ip;
     private String ipRegion;
     private String tag;
+    private String from;
 }

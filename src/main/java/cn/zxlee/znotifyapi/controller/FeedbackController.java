@@ -51,7 +51,7 @@ public class FeedbackController {
 
     @DeleteMapping("/feedback/{id}")
     @ApiOperation("删除一条反馈")
-    public Result deleteVersion(@RequestHeader String token, @NotEmpty @PathVariable("id") String id) {
+    public Result deleteFeedback(@RequestHeader String token, @NotEmpty @PathVariable("id") String id) {
         HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
         }};

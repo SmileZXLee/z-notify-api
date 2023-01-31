@@ -64,7 +64,7 @@ public class NoticeController {
     @DeleteMapping("/notice/{id}")
     @ApiOperation("删除一条通知")
     public Result deleteNotice(@RequestHeader String token, @NotEmpty @PathVariable("id") String noticeId){
-        HashMap<String, String> params  = new HashMap<String, String>() {{
+        HashMap<String, String> params = new HashMap<String, String>() {{
             put("token", token);
         }};
         int result = noticeService.deleteById(params, noticeId);

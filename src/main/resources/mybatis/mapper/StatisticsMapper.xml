@@ -81,7 +81,7 @@
     </select>
 
     <insert id="insertOne" parameterType="StatisticsPO">
-        INSERT INTO `t_statistics`(`id`, `ip`, `ip_region`, `tag`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{tag},#{projectId})
+        INSERT INTO `t_statistics`(`id`, `ip`, `ip_region`, `tag`, `from`, `project_id`) VALUES (#{id},#{ip},#{ipRegion},#{tag},#{from},#{projectId})
     </insert>
 
     <delete id="deleteById" parameterType="string">

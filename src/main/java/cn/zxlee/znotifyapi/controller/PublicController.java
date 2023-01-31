@@ -111,7 +111,8 @@ public class PublicController {
     public String visitGetStatistics(HttpServletRequest request,
                                      HttpServletResponse response,
                                      @NotEmpty @PathVariable("project_id") String projectId,
-                                     @ApiParam("用于额外区分不同个体的标签") @RequestParam(value = "tag", required = false) String tag){
+                                     @ApiParam("用于额外区分不同个体的标签") @RequestParam(value = "tag", required = false) String tag,
+                                     @ApiParam("访问者来源") @RequestParam(value = "from", required = false) String from){
         response.setHeader("Cache-Control", "no-cache,max-age=0,no-store,s-maxage=0,proxy-revalidate");
         response.setHeader("Expires", "0");
         String ip = IpUtils.getIpAddr(request);
@@ -119,6 +120,7 @@ public class PublicController {
         bo.setProjectId(projectId);
         bo.setIp(ip);
         bo.setTag(tag);
+        bo.setFrom(from);
         statisticsService.publicSaveOne(bo);
         return null;
     }
@@ -129,6 +131,7 @@ public class PublicController {
     public Result<StatisticsResultVO> visitAndGetStatistics(HttpServletRequest request,
                                                             @NotEmpty @PathVariable("project_id") String projectId,
                                                             @ApiParam("用于额外区分不同个体的标签") @RequestParam(value = "tag", required = false) String tag,
+                                                            @ApiParam("访问者来源") @RequestParam(value = "from", required = false) String from,
                                                             @ApiParam("visitor_count计算根据什么区分，默认为ip，可选值有ip、tag") @RequestParam(value = "visitor_by", required = false) @EnumValidator(StatisticsVisitorBy.class) String visitorBy) {
         String ip = IpUtils.getIpAddr(request);
         StatisticsBO bo = new StatisticsBO();
@@ -136,6 +139,7 @@ public class PublicController {
         bo.setProjectId(projectId);
         bo.setIp(ip);
         bo.setTag(tag);
+        bo.setFrom(from);
         statisticsService.publicSaveOne(bo);
         return Result.success(statisticsService.publicGetStatisticsResult(projectId, visitorBy));
     }
@@ -152,6 +156,7 @@ public class PublicController {
         bo.setProjectId(projectId);
         bo.setIp(ip);
         bo.setTag(badgeBO.getTag());
+        bo.setFrom(badgeBO.getFrom());
         statisticsService.publicSaveOne(bo);
 
         StatisticsResultVO statisticsResultVO = statisticsService.publicGetStatisticsResult(projectId, badgeBO.getVisitorBy());
